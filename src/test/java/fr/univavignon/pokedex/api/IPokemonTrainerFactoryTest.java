@@ -13,7 +13,6 @@ class IPokemonTrainerFactoryTest {
     @Mock
     private IPokemonTrainerFactory trainerFactory;
 
-    @Mock
     private Team team;
 
     @Mock
@@ -25,6 +24,7 @@ class IPokemonTrainerFactoryTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        team = Team.MYSTIC; // Initialize team with a real enum instance
     }
 
     @Test
