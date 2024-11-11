@@ -51,7 +51,7 @@ jobs:
       # Upload JaCoCo .exec file to Codecov
       - codecov/upload:
           file: target/jacoco.exec
-          token: $CODECOV_TOKEN # Ensure CODECOV_TOKEN is set in CircleCI environment variables
+          token: CODECOV_TOKEN # Reference the environment variable name here
 
 workflows:
   maven_test:
