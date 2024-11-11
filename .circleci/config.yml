@@ -4,62 +4,58 @@ orbs:
   codecov: codecov/codecov@4.0.1
 
 jobs:
-  build:
+  maven_build:
     docker:
-      - image: cimg/openjdk:11.0
-    environment:
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
+      - image: maven:3.8.5-openjdk-11
     steps:
       - checkout
-
-      # Restore Maven cache to speed up dependency resolution
-      - restore_cache:
-          keys:
-            - maven-{{ checksum "pom.xml" }}
-            - maven-
-
-      # Install Maven dependencies offline
       - run:
-          name: Install Maven dependencies
-          command: mvn dependency:go-offline -B
+          name: Maven Build
+          command: mvn clean install
 
-      # Cache Maven dependencies
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: maven-{{ checksum "pom.xml" }}
 
-      # Run tests with JaCoCo (this will generate target/jacoco.exec)
+  maven_tests:
+    docker:
+      - image: maven:3.8.5-openjdk-11
+    steps:
+      - checkout
       - run:
-          name: Run tests with JaCoCo
-          command: mvn clean test jacoco:prepare-agent
+          name: Run Tests
+          command: mvn test
 
-      # Store test results for CircleCI
-      - store_test_results:
-          path: target/surefire-reports/
 
-      # Store JaCoCo `.exec` file as an artifact for later upload
-      - store_artifacts:
-          path: target/jacoco.exec
-          destination: jacoco-exec
+  jacoco_report:
+    docker:
+      - image: maven:3.8.5-openjdk-11
+    steps:
+      - checkout
+      - run:
+          name: Generate JaCoCo Report
+          command: mvn jacoco:report
+
 
   codecov_upload:
     docker:
-      - image: cimg/openjdk:11.0
+      - image: maven:3.8.5-openjdk-11
     steps:
-      # Upload JaCoCo .exec file to Codecov
-      - codecov/upload:
-          file: target/jacoco.exec
-          token: CODECOV_TOKEN # Reference the environment variable name here
+      - run:
+          name: Upload to Codecov
+          command: bash <(curl -s https://codecov.io/bash)
 
 workflows:
+  version: 2
   maven_test:
     jobs:
-      - build
+      - maven_build
+      - maven_tests:
+          requires:
+            - maven_build
+      - jacoco_report:
+          requires:
+            - maven_tests
       - codecov_upload:
           requires:
-            - build
+            - jacoco_report
           filters:
             branches:
               only: master
