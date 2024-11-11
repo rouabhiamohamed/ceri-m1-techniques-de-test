@@ -80,8 +80,19 @@ class IPokemonFactoryTest {
     void testEqualsAndHashCode() {
         Pokemon anotherBulbasaur = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 0.56);
 
-        assertTrue(bulbasaur.equals(anotherBulbasaur));
+        assertEquals(bulbasaur.getIndex(), anotherBulbasaur.getIndex());
+        assertEquals(bulbasaur.getName(), anotherBulbasaur.getName());
+        assertEquals(bulbasaur.getAttack(), anotherBulbasaur.getAttack());
+        assertEquals(bulbasaur.getDefense(), anotherBulbasaur.getDefense());
+        assertEquals(bulbasaur.getStamina(), anotherBulbasaur.getStamina());
+        assertEquals(bulbasaur.getCp(), anotherBulbasaur.getCp());
+        assertEquals(bulbasaur.getHp(), anotherBulbasaur.getHp());
+        assertEquals(bulbasaur.getDust(), anotherBulbasaur.getDust());
+        assertEquals(bulbasaur.getCandy(), anotherBulbasaur.getCandy());
+        assertEquals(bulbasaur.getIv(), anotherBulbasaur.getIv(), 0.001);
+
         assertEquals(bulbasaur.hashCode(), anotherBulbasaur.hashCode());
     }
+
 
 }
