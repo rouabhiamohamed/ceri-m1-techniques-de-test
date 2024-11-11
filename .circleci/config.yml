@@ -38,8 +38,6 @@ jobs:
       - store_artifacts:
           path: target/site/jacoco
           destination: jacoco-report
-
-
   codecov_upload:
     docker:
       - image: cimg/openjdk:11.0
