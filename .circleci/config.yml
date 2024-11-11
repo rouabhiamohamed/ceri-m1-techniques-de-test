@@ -39,7 +39,7 @@ jobs:
           name: Upload coverage to Codecov
           command: |
             bash <(curl -s https://codecov.io/bash)
-          when: always # Ensure this step runs even if tests fail
+          when: always
 
 workflows:
   maven_test:
