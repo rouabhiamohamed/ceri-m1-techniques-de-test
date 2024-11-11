@@ -79,7 +79,9 @@ class IPokemonFactoryTest {
     @Test
     void testEqualsAndHashCode() {
         Pokemon anotherBulbasaur = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 0.56);
-        assertEquals(bulbasaur, anotherBulbasaur);
+
+        assertTrue(bulbasaur.equals(anotherBulbasaur));
         assertEquals(bulbasaur.hashCode(), anotherBulbasaur.hashCode());
     }
+
 }
