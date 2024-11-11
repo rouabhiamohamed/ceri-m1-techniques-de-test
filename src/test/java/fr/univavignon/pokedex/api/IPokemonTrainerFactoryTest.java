@@ -35,6 +35,7 @@ class IPokemonTrainerFactoryTest {
         PokemonTrainer actualTrainer = trainerFactory.createTrainer(trainerName, team, pokedexFactory);
 
         assertEquals(trainer, actualTrainer);
-        verify(trainerFactory).createTrainer(trainerName, team, pokedexFactory);
+        verify(trainerFactory).createTrainer(trainerName, trainer.getTeam(), pokedexFactory);
     }
+
 }
