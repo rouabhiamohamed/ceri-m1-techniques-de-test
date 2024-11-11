@@ -36,4 +36,50 @@ class IPokemonFactoryTest {
         verify(pokemonFactory).createPokemon(0, 613, 64, 4000, 4);
         verify(pokemonFactory).createPokemon(133, 2729, 202, 5000, 4);
     }
+
+    @Test
+    void testConstructorInitialization() {
+        assertEquals(0, bulbasaur.getIndex());
+        assertEquals("Bulbizarre", bulbasaur.getName());
+        assertEquals(126, bulbasaur.getAttack());
+        assertEquals(126, bulbasaur.getDefense());
+        assertEquals(90, bulbasaur.getStamina());
+        assertEquals(613, bulbasaur.getCp());
+        assertEquals(64, bulbasaur.getHp());
+        assertEquals(4000, bulbasaur.getDust());
+        assertEquals(4, bulbasaur.getCandy());
+        assertEquals(0.56, bulbasaur.getIv(), 0.01);
+    }
+
+    @Test
+    void testGetCp() {
+        assertEquals(613, bulbasaur.getCp());
+    }
+
+    @Test
+    void testGetHp() {
+        assertEquals(64, bulbasaur.getHp());
+    }
+
+    @Test
+    void testGetDust() {
+        assertEquals(4000, bulbasaur.getDust());
+    }
+
+    @Test
+    void testGetCandy() {
+        assertEquals(4, bulbasaur.getCandy());
+    }
+
+    @Test
+    void testGetIv() {
+        assertEquals(0.56, bulbasaur.getIv(), 0.01);
+    }
+
+    @Test
+    void testEqualsAndHashCode() {
+        Pokemon anotherBulbasaur = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 0.56);
+        assertEquals(bulbasaur, anotherBulbasaur);
+        assertEquals(bulbasaur.hashCode(), anotherBulbasaur.hashCode());
+    }
 }
