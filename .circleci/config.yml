@@ -43,7 +43,6 @@ jobs:
       - image: cimg/openjdk:11.0
     steps:
       - codecov/upload
-
 workflows:
   maven_test:
     jobs:
