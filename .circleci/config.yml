@@ -25,11 +25,21 @@ jobs:
           key: maven-{{ checksum "pom.xml" }}
 
       - run:
-          name: Run tests
-          command: mvn test
+          name: Run tests with JaCoCo
+          command: mvn test jacoco:report
 
       - store_test_results:
           path: target/surefire-reports/
+
+      - store_artifacts:
+          path: target/site/jacoco
+          destination: jacoco-report
+
+      - run:
+          name: Upload coverage to Codecov
+          command: |
+            bash <(curl -s https://codecov.io/bash)
+          when: always # Ensure this step runs even if tests fail
 
 workflows:
   maven_test:
