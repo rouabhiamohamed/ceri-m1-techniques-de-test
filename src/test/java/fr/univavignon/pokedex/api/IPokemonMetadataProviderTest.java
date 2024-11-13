@@ -52,7 +52,7 @@ class IPokemonMetadataProviderTest {
     }
 
     @Test
-    void testGetPokemonMetadata_InvalidIndex() {
+    void testGetPokemonMetadata_InvalidIndex() throws PokedexException {
         // Given
         int[] invalidIndices = {-1, -100};
         for (int invalidIndex : invalidIndices) {
