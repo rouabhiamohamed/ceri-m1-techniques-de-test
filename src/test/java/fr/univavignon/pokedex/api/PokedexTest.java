@@ -49,6 +49,7 @@ public class PokedexTest {
         assertEquals(500, result.getDust());
         assertEquals(50, result.getCandy());
         assertEquals(0.8, result.getIv(), 0.01);
+
     }
 
     @Test
