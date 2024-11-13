@@ -18,8 +18,12 @@ public class Pokedex implements IPokedex {
     }
 
     @Override
+    public PokemonMetadata getPokemonMetadata(int index) throws PokedexException {
+        return metadataProvider.getPokemonMetadata(index);
+    }
+
+    @Override
     public Pokemon createPokemon(int index, int cp, int hp, int dust, int candy) {
-        // Delegate pokemon creation to the injected pokemon factory
         return pokemonFactory.createPokemon(index, cp, hp, dust, candy);
     }
 
@@ -52,11 +56,5 @@ public class Pokedex implements IPokedex {
         List<Pokemon> sortedList = new ArrayList<>(pokemons);
         Collections.sort(sortedList, order);
         return Collections.unmodifiableList(sortedList);
-    }
-
-
-    @Override
-    public PokemonMetadata getPokemonMetadata(int index) throws PokedexException {
-        return null;
     }
 }
