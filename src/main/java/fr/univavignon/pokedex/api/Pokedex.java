@@ -18,6 +18,12 @@ public class Pokedex implements IPokedex {
     }
 
     @Override
+    public Pokemon createPokemon(int index, int cp, int hp, int dust, int candy) {
+        // Delegate pokemon creation to the injected pokemon factory
+        return pokemonFactory.createPokemon(index, cp, hp, dust, candy);
+    }
+
+    @Override
     public int size() {
         return pokemons.size();
     }
@@ -48,15 +54,9 @@ public class Pokedex implements IPokedex {
         return Collections.unmodifiableList(sortedList);
     }
 
-    @Override
-    public Pokemon createPokemon(int index, int cp, int hp, int dust, int candy) {
-        return null;
-    }
 
     @Override
     public PokemonMetadata getPokemonMetadata(int index) throws PokedexException {
         return null;
     }
-
-
 }
