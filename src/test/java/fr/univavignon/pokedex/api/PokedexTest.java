@@ -50,6 +50,7 @@ public class PokedexTest {
         assertEquals(50, result.getCandy());
         assertEquals(0.8, result.getIv(), 0.01);
 
+
     }
 
     @Test
