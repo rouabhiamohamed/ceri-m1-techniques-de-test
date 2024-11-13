@@ -1,61 +1,40 @@
 version: 2.1
 
 orbs:
-  codecov: codecov/codecov@4.0.1
+  codecov: codecov/codecov@3.0.0
 
-jobs:
-  maven_build:
-    docker:
-      - image: maven:3.8.5-openjdk-11
-    steps:
-      - checkout
-      - run:
-          name: Maven Build
-          command: mvn clean install
+executors:
+  maven-executor:
+  docker:
+   - image: maven:3.8.6-openjdk-11
+  jobs:
+build:
+  docker:
+    - image: maven:3.8.6-openjdk-11
 
+  steps:
+    # 1. Récupérer le code
+    - checkout
 
-  maven_tests:
-    docker:
-      - image: maven:3.8.5-openjdk-11
-    steps:
-      - checkout
-      - run:
-          name: Run Tests
-          command: mvn test
+    # 2. Nettoyer le projet
+    - run: mvn clean
 
+    # 3. Lancer les tests unitaires avec Maven
+    - run: mvn test
 
-  jacoco_report:
-    docker:
-      - image: maven:3.8.5-openjdk-11
-    steps:
-      - checkout
-      - run:
-          name: Generate JaCoCo Report
-          command: mvn jacoco:report
+    # 4. Générer le rapport de couverture avec JaCoCo
+    - run: mvn jacoco:report
 
-
-  codecov_upload:
-    docker:
-      - image: maven:3.8.5-openjdk-11
-    steps:
-      - run:
-          name: Upload to Codecov
-          command: bash <(curl -s https://codecov.io/bash)
+    # 5. Télécharger le rapport de couverture sur Codecov
+    - codecov/upload:
+  file: target/site/jacoco/jacoco.xml
 
 workflows:
   version: 2
-  maven_test:
-    jobs:
-      - maven_build
-      - maven_tests:
-          requires:
-            - maven_build
-      - jacoco_report:
-          requires:
-            - maven_tests
-      - codecov_upload:
-          requires:
-            - jacoco_report
-          filters:
-            branches:
-              only: master
+  build:
+  jobs:
+    - build:
+  filters:
+  branches:
+  only:
+  - master # Exécuter uniquement sur la branche mast
