@@ -1,40 +1,32 @@
 version: 2.1
 
 orbs:
-  codecov: codecov/codecov@3.0.0
+ codecov: codecov/codecov@3.0.0
 
-executors:
+ executors:
   maven-executor:
-  docker:
-   - image: maven:3.8.6-openjdk-11
-  jobs:
-build:
-  docker:
+   docker:
     - image: maven:3.8.6-openjdk-11
 
-  steps:
-    # 1. Récupérer le code
-    - checkout
+   jobs:
+     build:
+     docker:
+     - image: maven:3.8.6-openjdk-11
 
-    # 2. Nettoyer le projet
-    - run: mvn clean
+steps:
+  - checkout
+  - run: mvn clean
+  - run: mvn test
+  - run: mvn jacoco:report
+  - codecov/upload:
+      file: target/site/jacoco/jacoco.xml
 
-    # 3. Lancer les tests unitaires avec Maven
-    - run: mvn test
-
-    # 4. Générer le rapport de couverture avec JaCoCo
-    - run: mvn jacoco:report
-
-    # 5. Télécharger le rapport de couverture sur Codecov
-    - codecov/upload:
-  file: target/site/jacoco/jacoco.xml
-
-workflows:
-  version: 2
-  build:
-  jobs:
-    - build:
-  filters:
-  branches:
-  only:
-  - master # Exécuter uniquement sur la branche mast
+    workflows:
+    version: 2
+    build:
+    jobs:
+  - build:
+    filters:
+    branches:
+    only:
+  - master
