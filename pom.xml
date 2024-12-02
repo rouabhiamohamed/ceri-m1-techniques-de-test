@@ -95,9 +95,6 @@
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
-                    <propertyExpansion>
-                        <encoding>${project.build.sourceEncoding}</encoding>
-                    </propertyExpansion>
                 </configuration>
                 <executions>
                     <execution>
@@ -109,6 +106,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+
 
         </plugins>
     </build>
