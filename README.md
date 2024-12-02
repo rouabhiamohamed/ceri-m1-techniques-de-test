@@ -9,6 +9,7 @@
 
 [![CircleCI](https://circleci.com/gh/rouabhiamohamed/ceri-m1-techniques-de-test.svg?style=shield)](https://circleci.com/gh/rouabhiamohamed/ceri-m1-techniques-de-test)
 [![codecov](https://codecov.io/gh/rouabhiamohamed/ceri-m1-techniques-de-test/graph/badge.svg?token=WSX5HZDM4U)](https://codecov.io/gh/rouabhiamohamed/ceri-m1-techniques-de-test)
+![Code Quality](https://img.shields.io/badge/Code%20Quality-Passing-brightgreen)
 Ces badges indiquent respectivement :
 
 - **CircleCI** : Le statut des tests et de l'intégration continue de votre projet.
