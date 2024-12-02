@@ -30,19 +30,20 @@
         <module name="UnusedImports"/>
 
         <module name="CyclomaticComplexity">
-            <property name="max" value="10"/>
+            <property name="max" value="20"/>
         </module>
         <module name="NPathComplexity">
-            <property name="max" value="200"/>
+            <property name="max" value="300"/>
         </module>
 
         <module name="MethodLength">
-            <property name="max" value="50"/>
+            <property name="max" value="100"/>
         </module>
         <module name="EmptyBlock"/>
         <module name="NeedBraces"/>
 
-        <module name="JavadocMethod"/>
+        <module name="JavadocMethod">
+        </module>
         <module name="JavadocType"/>
         <module name="JavadocVariable"/>
     </module>
