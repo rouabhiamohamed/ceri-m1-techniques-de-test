@@ -42,9 +42,7 @@
         <module name="EmptyBlock"/>
         <module name="NeedBraces"/>
 
-        <module name="JavadocMethod">
-            <property name="scope" value="public"/>
-        </module>
+        <module name="JavadocMethod"/>
         <module name="JavadocType"/>
         <module name="JavadocVariable"/>
     </module>
