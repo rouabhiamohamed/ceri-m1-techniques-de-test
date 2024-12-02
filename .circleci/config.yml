@@ -18,11 +18,14 @@ jobs:
    - run: mvn jacoco:report
    - codecov/upload:
       file: target/site/jacoco/jacoco.xml
-   - name: Upload Checkstyle Report
-     uses: actions/upload-artifact@v3
-     with:
-      name: checkstyle-report
-      path: target/site/checkstyle.html
+   - run:
+      name: Upload Checkstyle Report
+      command: |
+       echo "Uploading Checkstyle report"
+       cp target/site/checkstyle.html /tmp/checkstyle-report.html
+   - store_artifacts:
+      path: /tmp/checkstyle-report.html
+      destination: checkstyle-report
 
 workflows:
  version: 2
