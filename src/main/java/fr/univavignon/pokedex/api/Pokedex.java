@@ -5,12 +5,26 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Implementation of the {@link IPokedex} interface.
+ */
 public class Pokedex implements IPokedex {
 
+    /** List of Pokemon owned by the trainer. */
     private final List<Pokemon> pokemons;
+
+    /** Provider of Pokemon metadata. */
     private final IPokemonMetadataProvider metadataProvider;
+
+    /** Factory for creating Pokemon instances. */
     private final IPokemonFactory pokemonFactory;
 
+    /**
+     * Constructs a new Pokedex.
+     *
+     * @param metadataProvider The provider of Pokemon metadata.
+     * @param pokemonFactory   The factory for creating Pokemon instances.
+     */
     public Pokedex(IPokemonMetadataProvider metadataProvider, IPokemonFactory pokemonFactory) {
         this.pokemons = new ArrayList<>();
         this.metadataProvider = metadataProvider;
