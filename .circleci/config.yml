@@ -64,6 +64,7 @@ jobs:
             git push -f git@github.com:rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages
 
 workflows:
+
   version: 2
   build-and-deploy:
     jobs:
