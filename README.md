@@ -9,13 +9,12 @@
 
 [![CircleCI](https://circleci.com/gh/rouabhiamohamed/ceri-m1-techniques-de-test.svg?style=shield)](https://circleci.com/gh/rouabhiamohamed/ceri-m1-techniques-de-test)
 [![codecov](https://codecov.io/gh/rouabhiamohamed/ceri-m1-techniques-de-test/graph/badge.svg?token=WSX5HZDM4U)](https://codecov.io/gh/rouabhiamohamed/ceri-m1-techniques-de-test)
-![Checkstyle](https://img.shields.io/endpoint?url=https://rouabhiamohamed.github.io/ceri-m1-techniques-de-test/checkstyle.json)
-
+[![Checkstyle](https://img.shields.io/badge/Checkstyle-Report-blue)](https://rouabhiamohamed.github.io/ceri-m1-techniques-de-test/checkstyle.html)
 Ces badges indiquent respectivement :
 
 - **CircleCI** : Le statut des tests et de l'intégration continue de votre projet.
 - **Codecov** : La couverture des tests du projet.
-
+- **Checkstyle** : Consultez le rapport de style du code.
 ---
 
 ## Introduction
