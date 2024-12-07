@@ -2,14 +2,11 @@ version: 2.1
 
 orbs:
   codecov: codecov/codecov@3.0.0
-  node: circleci/node@4.0.0
 
 executors:
   maven-executor:
     docker:
       - image: maven:3.8.6-openjdk-11
-      - image: circleci/python:3.8
-    working_directory: ~/repo
 
 jobs:
   build:
@@ -17,46 +14,37 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Node.js and npx
-          command: |
-            curl -sL https://deb.nodesource.com/setup_14.x | bash - 
-            apt-get install -y nodejs # Installer Node.js et npx
-
-      - run:
           name: Clean Workspace
           command: mvn clean
-
       - run:
           name: Run Tests
           command: mvn test
-
       - run:
           name: Generate JaCoCo Report
           command: mvn jacoco:report
-
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
-
       - run:
           name: Run Checkstyle
           command: mvn checkstyle:check
-
       - run:
           name: Upload Checkstyle Report
           command: |
             echo "Uploading Checkstyle report"
             cp target/site/checkstyle.html /tmp/checkstyle-report.html
-
       - store_artifacts:
           path: /tmp/checkstyle-report.html
           destination: checkstyle-report
-
+      - run:
+          name: Install gh-pages
+          command: npm install --save-dev gh-pages
       - run:
           name: Deploy Checkstyle Report to GitHub Pages
           command: |
             mkdir -p out
             cp target/site/checkstyle.html out/index.html
-            npx gh-pages -d out 
+            ls -l out
+            npx gh-pages -d out
 
 workflows:
   version: 2
