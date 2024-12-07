@@ -26,7 +26,7 @@ jobs:
           file: target/site/jacoco/jacoco.xml
       - run:
           name: Run Checkstyle
-          command: mvn checkstyle:checkstyle
+          command: mvn checkstyle:check
       - run:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
@@ -35,13 +35,15 @@ jobs:
           command: |
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
-            git checkout -b gh-pages
-            mv target/site/apidocs /tmp/
-            git add -f /tmp/apidocs
+            git fetch origin gh-pages || echo "Branch does not exist yet"
+            git checkout -B gh-pages
+            git rm -rf . || echo "Nothing to clean"
+            cp -r target/site/apidocs/* .
+            git add .
             git commit -m "Publish Javadoc"
             git push -f origin gh-pages
       - store_artifacts:
-          path: /tmp/apidocs
+          path: target/site/apidocs
           destination: javadoc
 
 workflows:
