@@ -5,9 +5,7 @@
 
 <module name="Checker">
     <module name="FileTabCharacter"/>
-    <module name="JavadocMethod"/>
-    <module name="JavadocType"/>
-    <module name="JavadocVariable"/>
+
     <module name="FileLength">
         <property name="max" value="500"/>
     </module>
@@ -25,7 +23,9 @@
         <module name="ParameterName"/>
         <module name="StaticVariableName"/>
         <module name="TypeName"/>
-
+        <module name="JavadocMethod"/>
+        <module name="JavadocType"/>
+        <module name="JavadocVariable"/>
         <module name="AvoidStarImport"/>
         <module name="IllegalImport"/>
         <module name="RedundantImport"/>
