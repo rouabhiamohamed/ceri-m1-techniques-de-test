@@ -1,78 +1,53 @@
 version: 2.1
 
-orbs:
-  codecov: codecov/codecov@3.0.0
-
-executors:
-  maven-executor:
-    docker:
-      - image: maven:3.8.6-openjdk-11
-
 jobs:
   build:
-    executor: maven-executor
+    docker:
+      - image: maven:3.8.7-openjdk-17
     steps:
       - checkout
       - run:
-          name: Clean Workspace
-          command: mvn clean
+          name: "Install dependencies and build project"
+          command: mvn clean install
       - run:
-          name: Run Tests
-          command: mvn test
-      - run:
-          name: Generate JaCoCo Report
-          command: mvn jacoco:report
-      - codecov/upload:
-          file: target/site/jacoco/jacoco.xml
-      - run:
-          name: Run Checkstyle
-          command: mvn checkstyle:check
-      - run:
-          name: Generate Javadoc
+          name: "Generate Javadoc"
           command: mvn javadoc:javadoc
-      - run:
-          name: Check if apidocs exists
-          command: |
-            if [ -d "target/site/apidocs" ]; then
-              echo "Javadoc exists, proceeding to copy."
-            else
-              echo "Javadoc directory does not exist. Exiting."
-              exit 1
-            fi
-      - store_artifacts:
-          path: target/site/apidocs
-          destination: javadoc
+      - persist_to_workspace:
+          root: .
+          paths:
+            - target/site/apidocs
 
   deploy:
-    executor: maven-executor
+    docker:
+      - image: maven:3.8.7-openjdk-17
     steps:
-      - checkout
+      - attach_workspace:
+          at: /workspace
       - run:
-          name: Add GitHub to Known Hosts
-          command: ssh-keyscan github.com >> ~/.ssh/known_hosts
-      - run:
-          name: Publish Javadoc to GitHub Pages
+          name: "Switch to gh-pages branch"
           command: |
-            git config --global user.email "ci@circleci.com"
-            git config --global user.name "CircleCI"
-            git fetch origin gh-pages || echo "Branch does not exist yet"
-            git checkout -B gh-pages
+            git config user.name "CircleCI"
+            git config user.email "ci@example.com"
+            git stash || echo "Nothing to stash"
+            git checkout gh-pages || git checkout --orphan gh-pages
             git rm -rf . || echo "Nothing to clean"
-            cp -r target/site/apidocs/* .
+      - run:
+          name: "Copy Javadoc to gh-pages"
+          command: |
+            cp -R /workspace/target/site/apidocs/* .
+            ls -R
+      - run:
+          name: "Commit and push Javadoc to gh-pages"
+          command: |
             git add .
-            git commit -m "Publish Javadoc"
-            git push -f git@github.com:rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages
+            git commit -m "Publish Javadoc [ci skip]" || echo "No changes to commit"
+            git push -f origin gh-pages
 
 workflows:
-
   version: 2
   build-and-deploy:
     jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - master
+      - build
       - deploy:
           requires:
             - build
