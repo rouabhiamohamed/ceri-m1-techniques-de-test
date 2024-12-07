@@ -14,6 +14,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install Node.js and npm
+          command: |
+            # Installer Node.js (version 14.x) et npm
+            curl -sL https://deb.nodesource.com/setup_14.x | bash -  
+            apt-get install -y nodejs  # Installer npm et Node.js
+
+      - run:
           name: Clean Workspace
           command: mvn clean
       - run:
@@ -42,10 +49,11 @@ jobs:
       - run:
           name: Deploy Checkstyle Report to GitHub Pages
           command: |
-            mkdir -p out 
-            cp target/site/checkstyle.html out/index.html 
+            mkdir -p out
+            cp target/site/checkstyle.html out/index.html
             ls -l out  
-            npx gh-pages -d out --cache-dir out/.gh-pages-cache
+            npx gh-pages -d out --cache-dir out/.gh-pages-cache  
+
 workflows:
   version: 2
   build-and-test:
