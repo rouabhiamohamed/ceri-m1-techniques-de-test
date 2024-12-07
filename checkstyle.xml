@@ -5,7 +5,9 @@
 
 <module name="Checker">
     <module name="FileTabCharacter"/>
-
+    <module name="JavadocMethod"/>
+    <module name="JavadocType"/>
+    <module name="JavadocVariable"/>
     <module name="FileLength">
         <property name="max" value="500"/>
     </module>

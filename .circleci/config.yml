@@ -28,13 +28,21 @@ jobs:
           name: Run Checkstyle
           command: mvn checkstyle:checkstyle
       - run:
-          name: Prepare Checkstyle Report
+          name: Generate Javadoc
+          command: mvn javadoc:javadoc
+      - run:
+          name: Publish Javadoc to GitHub Pages
           command: |
-            mkdir -p /tmp/checkstyle-report
-            cp target/site/checkstyle.html /tmp/checkstyle-report/checkstyle.html
+            git config --global user.email "ci@circleci.com"
+            git config --global user.name "CircleCI"
+            git checkout -b gh-pages
+            mv target/site/apidocs /tmp/
+            git add -f /tmp/apidocs
+            git commit -m "Publish Javadoc"
+            git push -f origin gh-pages
       - store_artifacts:
-          path: /tmp/checkstyle-report
-          destination: checkstyle-report
+          path: /tmp/apidocs
+          destination: javadoc
 
 workflows:
   version: 2
