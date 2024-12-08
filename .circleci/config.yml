@@ -63,11 +63,16 @@ jobs:
 
             # Force copy all files
             cp -r -f target/site/* .  
+            
+            # Explicitly copy checkstyle.html
+            cp target/site/checkstyle.html . || echo "checkstyle.html not found"  
 
             # Debug: List contents after copying
             echo "After copying:"
             ls -R  
 
+            # Force add checkstyle.html
+            git add -f checkstyle.html
             git add -A -f  # Force add all files
             git status  
 
