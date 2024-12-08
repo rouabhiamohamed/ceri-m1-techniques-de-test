@@ -32,13 +32,25 @@ jobs:
           command: mvn checkstyle:checkstyle
       - run:
           name: Check if Checkstyle Report Exists
-          command: ls -l target/site/
+          command: |
+            echo "Listing files in target/site:"
+            ls -l target/site/
+            echo "Checkstyle report exists:"
+            ls -l target/site/checkstyle.html
       - run:
           name: Wait for Checkstyle Report to be Generated
           command: |
+            # Wait and check for the file repeatedly
+            count=0
+            max_attempts=10
             while [ ! -f target/site/checkstyle.html ]; do
-              echo "Waiting for Checkstyle report to be generated..."
+              if [ $count -ge $max_attempts ]; then
+                echo "Checkstyle report not found after $max_attempts attempts!"
+                exit 1
+              fi
+              echo "Waiting for Checkstyle report to be generated... Attempt $((count+1))"
               sleep 5
+              count=$((count+1))
             done
             echo "Checkstyle report found!"
       - run:
@@ -47,27 +59,24 @@ jobs:
       - run:
           name: Publish Javadoc and Checkstyle Report to GitHub Pages
           command: |
-            # Configure Git user
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
             
-            # Fetch the gh-pages branch or create it if it doesn't exist
             git fetch origin gh-pages || echo "Branch does not exist yet"
             git checkout -B gh-pages
             
-            # Clean previous content from the gh-pages branch if needed
             git rm -rf . || echo "Nothing to clean"
             
-            # Copy Javadoc and Checkstyle reports to the root of gh-pages branch
             cp -r target/site/apidocs/* .
-            while [ ! -f target/site/checkstyle.html ]; do
-              echo "Waiting for Checkstyle report to be generated..."
-              sleep 5
-            done
-            echo "Checkstyle report found!"
-            cp target/site/checkstyle.html .  # Copy checkstyle.html to root
+            # Ensure the checkstyle.html file exists
+            if [ -f target/site/checkstyle.html ]; then
+              echo "Checkstyle report found, copying it."
+              cp target/site/checkstyle.html .
+            else
+              echo "Checkstyle report not found!"
+              exit 1
+            fi
             
-            # Add changes, commit, and push to GitHub Pages
             git add .
             git commit -m "Publish Javadoc and Checkstyle Report"
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
