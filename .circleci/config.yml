@@ -38,9 +38,13 @@ jobs:
             echo "Check for checkstyle.html in the list:"
             find target/site/ -name "checkstyle.html"  # Specifically check for checkstyle.html
 
+            echo "Checking if checkstyle.html is ignored by Git"
+            git check-ignore -v target/site/checkstyle.html  
+
       - run:
           name: Publish Javadoc and Checkstyle to GitHub Pages
           command: |
+            # Set up Git user information
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
             
@@ -49,12 +53,12 @@ jobs:
 
             git rm -rf . || echo "Nothing to clean"
 
-            echo "Copying all content from target/site to the root of gh-pages branch"
-            cp -r target/site/* .  # Ensure all content (including checkstyle.html) is copied
-            ls -R  # Debugging: List all files after copying
+            echo 
+            cp -r target/site/* .  
+            ls -R  
 
-            git add -A  # Ensure all files, including new ones, are staged
-            git status  # Debugging: Check which files are staged for commit
+            git add -A  
+            git status  
 
             git commit -m "Publish Javadoc and site content"
 
