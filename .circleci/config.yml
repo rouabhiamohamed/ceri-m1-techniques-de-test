@@ -31,17 +31,29 @@ jobs:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
       - run:
-          name: Publish Javadoc to GitHub Pages
-          command: |
-            git config --global user.email "ci@circleci.com"
-            git config --global user.name "CircleCI"
-            git fetch origin gh-pages || echo "Branch does not exist yet"
-            git checkout -B gh-pages
-            git rm -rf . || echo "Nothing to clean"
-            cp -r target/site/apidocs/* . 
-            git add .
-            git commit -m "Publish Javadoc"
-            git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
+              name: Publish Javadoc and Checkstyle Report to GitHub Pages
+              command: |
+                git config --global user.email "ci@circleci.com"
+                git config --global user.name "CircleCI"
+                git fetch origin gh-pages || echo "Branch does not exist yet"
+                git checkout -B gh-pages
+                git rm -rf . || echo "Nothing to clean"
+                cp -r target/site/apidocs/* .
+                
+                # Ensure Checkstyle report exists and set file permissions before copying
+                if [ -f target/site/checkstyle.html ]; then
+                  # Set read, write, and execute permissions on the file
+                  chmod 644 target/site/checkstyle.html
+                  echo "Checkstyle report permissions set successfully!"
+                  cp target/site/checkstyle.html .
+                else
+                  echo "Checkstyle report not found, skipping copy."
+                fi
+                
+                git add .
+                git commit -m "Publish Javadoc and Checkstyle Report"
+                git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
+
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
