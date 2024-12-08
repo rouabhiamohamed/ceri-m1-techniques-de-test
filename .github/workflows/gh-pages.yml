@@ -3,7 +3,7 @@ name: Update GitHub Pages
 on:
   push:
     branches:
-      - master
+      - master  # Trigger only on pushes to the master branch
 
 jobs:
   deploy:
@@ -13,11 +13,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up JDK 11
+      - name: Set up JDK 11 (using adoptopenjdk)
         uses: actions/setup-java@v3
         with:
           java-version: '11'
-          distribution: 'openjdk'
+          distribution: 'adoptopenjdk'  # Use adoptopenjdk version 11
+
       - name: Build project
         run: |
           mvn clean install
