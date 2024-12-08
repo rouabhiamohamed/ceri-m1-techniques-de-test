@@ -31,7 +31,10 @@ jobs:
           command: mvn checkstyle:checkstyle
       - run:
           name: Check if Checkstyle Report Exists
-          command: ls -l target/site/
+          command: |
+            echo "Listing files in target/site/"
+            ls -l target/site/  # List all files in target/site to confirm checkstyle.html exists
+
       - run:
           name: Wait for Checkstyle Report to be Generated
           command: |
