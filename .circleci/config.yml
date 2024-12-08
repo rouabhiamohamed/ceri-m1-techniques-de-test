@@ -34,30 +34,16 @@ jobs:
           command: |
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
-            
-            # Copy Javadoc to the site directory
-            cp -r target/site/apidocs/* site/
-
-            # Create a .nojekyll file to disable Jekyll processing
-            touch site/.nojekyll
-
-      - deploy:
-          name: Deploy to GitHub Pages
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              cd site
-              git init
-              git config user.email "ci@circleci.com"
-              git config user.name "CircleCI"
-              git add .
-              git commit -m "Deploy Javadoc to GitHub Pages [skip ci]"
-              git push -f https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git master:gh-pages
-            fi
-
+            git fetch origin gh-pages || echo "Branch does not exist yet"
+            git checkout -B gh-pages
+            git rm -rf . || echo "Nothing to clean"
+            cp -r target/site/apidocs/* .
+            git add .
+            git commit -m "Publish Javadoc"
+            git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
-
 workflows:
   version: 2
   build-and-test:
