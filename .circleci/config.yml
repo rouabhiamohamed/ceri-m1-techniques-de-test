@@ -26,28 +26,42 @@ jobs:
           file: target/site/jacoco/jacoco.xml
       - run:
           name: Run Checkstyle
-          command: mvn checkstyle:checkstyle
+          command: mvn checkstyle:check
       - run:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
       - run:
-          name: Publish Javadoc to GitHub Pages
+          name: Debug Files Before Publishing
           command: |
+            echo "Listing all files in target/site/"
+            ls -R target/site/
+            echo "Check for checkstyle.html in the list:"
+            find target/site/ -name "checkstyle.html"  # Specifically check for checkstyle.html
+
+            echo "Checking if checkstyle.html is ignored by Git"
+            git check-ignore -v target/site/checkstyle.html  
+
+      - run:
+          name: Publish Javadoc and Checkstyle to GitHub Pages
+          command: |
+            # Set up Git user information
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
             
             git fetch origin gh-pages || echo "Branch does not exist yet, creating a new one."
             git checkout -B gh-pages
-            
+
             git rm -rf . || echo "Nothing to clean"
-            
+
+            echo 
             cp -r target/site/* .  
-            
-            ls -R 
-            
-            git add .
-            git commit -m "Publish Javadoc and Checkstyle reports"
-            
+            ls -R  
+
+            git add -A  
+            git status  
+
+            git commit -m "Publish Javadoc and site content"
+
             git push --force https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
 
       - store_artifacts:
