@@ -49,7 +49,6 @@ jobs:
                 else
                   echo "Checkstyle report not found, skipping copy."
                 fi
-                
                 git add .
                 git commit -m "Publish Javadoc and Checkstyle Report"
                 git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
