@@ -35,10 +35,17 @@ jobs:
       - run:
           name: Wait for Checkstyle Report to be Generated
           command: |
-            while [ ! -f target/site/checkstyle.html ]; do
+            TIMEOUT=300  # Timeout in seconds (5 minutes)
+            COUNTER=0
+            while [ ! -f target/site/checkstyle.html ] && [ $COUNTER -lt $TIMEOUT ]; do
               echo "Waiting for Checkstyle report to be generated..."
               sleep 5
+              COUNTER=$((COUNTER + 5))
             done
+            if [ ! -f target/site/checkstyle.html ]; then
+              echo "Error: Checkstyle report not generated within timeout period"
+              exit 1  # Fail the build if the report doesn't exist
+            fi
             echo "Checkstyle report found!"
       - run:
           name: Generate Javadoc
@@ -52,18 +59,14 @@ jobs:
             git checkout -B gh-pages
             git rm -rf . || echo "Nothing to clean"
             cp -r target/site/apidocs/* .
-            while [ ! -f target/site/checkstyle.html ]; do
-             echo "Waiting for Checkstyle report to be generated..."
-             sleep 5
-             done
-             echo "Checkstyle report found!"
-             cp target/site/checkstyle.html .
-             git add .
+            cp target/site/checkstyle.html .  # Copy the Checkstyle report if it exists
+            git add .
             git commit -m "Publish Javadoc and Checkstyle Report"
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
+
 workflows:
   version: 2
   build-and-test:

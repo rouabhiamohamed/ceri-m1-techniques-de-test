@@ -130,6 +130,13 @@
                             <goal>check</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
