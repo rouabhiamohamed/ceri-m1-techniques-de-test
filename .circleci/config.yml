@@ -27,6 +27,14 @@ jobs:
           name: Run Checkstyle
           command: mvn checkstyle:check
       - run:
+          name: Prepare Checkstyle Report
+          command: |
+           mkdir -p /tmp/checkstyle-report
+           cp target/site/checkstyle.html /tmp/checkstyle-report/checkstyle.html
+      - store_artifacts:
+            path: /tmp/checkstyle-report
+            destination: checkstyle-report
+      - run:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
       - run:
