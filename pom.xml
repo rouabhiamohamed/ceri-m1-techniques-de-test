@@ -115,6 +115,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
+
                     <configLocation>checkstyle.xml</configLocation>
                     <outputDirectory>target/site</outputDirectory>
                     <consoleOutput>true</consoleOutput>
