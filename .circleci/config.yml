@@ -1,5 +1,4 @@
 version: 2.1
-
 orbs:
   codecov: codecov/codecov@3.0.0
 
@@ -28,62 +27,23 @@ jobs:
           name: Run Checkstyle
           command: mvn checkstyle:check
       - run:
-          name: Generate Checkstyle Report
-          command: mvn checkstyle:checkstyle
-      - run:
-          name: Check if Checkstyle Report Exists
-          command: |
-            echo "Listing files in target/site:"
-            ls -l target/site/
-            echo "Checkstyle report exists:"
-            ls -l target/site/checkstyle.html
-      - run:
-          name: Wait for Checkstyle Report to be Generated
-          command: |
-            count=0
-            max_attempts=10
-            while [ ! -f target/site/checkstyle.html ]; do
-              if [ $count -ge $max_attempts ]; then
-                echo "Checkstyle report not found after $max_attempts attempts!"
-                exit 1
-              fi
-              echo "Waiting for Checkstyle report to be generated... Attempt $((count+1))"
-              sleep 5
-              count=$((count+1))
-            done
-            echo "Checkstyle report found!"
-      - run:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
       - run:
-          name: Publish Javadoc and Checkstyle Report to GitHub Pages
+          name: Publish Javadoc to GitHub Pages
           command: |
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
-            
             git fetch origin gh-pages || echo "Branch does not exist yet"
             git checkout -B gh-pages
-            
             git rm -rf . || echo "Nothing to clean"
-            
             cp -r target/site/apidocs/* .
-            # Ensure the checkstyle.html file exists
-            if [ -f target/site/checkstyle.html ]; then
-              echo "Checkstyle report found, copying it."
-              cp target/site/checkstyle.html .
-            else
-              echo "Checkstyle report not found!"
-              exit 1
-            fi
-            
             git add .
-            git commit -m "Publish Javadoc and Checkstyle Report"
+            git commit -m "Publish Javadoc"
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
-
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
-
 workflows:
   version: 2
   build-and-test:
