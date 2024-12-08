@@ -1,0 +1,8 @@
+/root/project/src/test/java/fr/univavignon/pokedex/api/IPokedexFactoryTest.java
+/root/project/src/test/java/fr/univavignon/pokedex/api/IPokemonTrainerFactoryTest.java
+/root/project/src/test/java/fr/univavignon/pokedex/api/PokedexTest.java
+/root/project/src/test/java/fr/univavignon/pokedex/api/PokemonTrainerFactoryTest.java
+/root/project/src/test/java/fr/univavignon/pokedex/api/IPokemonMetadataProviderTest.java
+/root/project/src/test/java/fr/univavignon/pokedex/api/AbstractPokedexTest.java
+/root/project/src/test/java/fr/univavignon/pokedex/api/IPokemonFactoryTest.java
+/root/project/src/test/java/fr/univavignon/pokedex/api/IPokedexTest.java
