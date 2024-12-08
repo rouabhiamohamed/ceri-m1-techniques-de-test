@@ -61,19 +61,15 @@ jobs:
             echo "Before copying:"
             ls -R target/site/
 
-            # Force copy all files
-            cp -r -f target/site/* .  
-            
-            # Explicitly copy checkstyle.html
-            cp target/site/checkstyle.html . || echo "checkstyle.html not found"  
+            # Use rsync to copy all files
+            rsync -av --exclude='.git/' target/site/ .
 
             # Debug: List contents after copying
             echo "After copying:"
             ls -R  
 
-            # Force add checkstyle.html
-            git add -f checkstyle.html
-            git add -A -f  # Force add all files
+            # Add all files, including ignored ones
+            git add -A -f
             git status  
 
             git commit -m "Publish Javadoc and site content"
