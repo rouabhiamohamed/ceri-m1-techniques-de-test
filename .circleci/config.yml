@@ -30,6 +30,17 @@ jobs:
           name: Generate Checkstyle Report
           command: mvn checkstyle:checkstyle
       - run:
+          name: Check if Checkstyle Report Exists
+          command: ls -l target/site/
+      - run:
+          name: Wait for Checkstyle Report to be Generated
+          command: |
+            while [ ! -f target/site/checkstyle.html ]; do
+              echo "Waiting for Checkstyle report to be generated..."
+              sleep 5
+            done
+            echo "Checkstyle report found!"
+      - run:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
       - run:
