@@ -12,6 +12,7 @@
 ## Documentation
 
 [Javadoc documentation ](https://rouabhiamohamed.github.io/ceri-m1-techniques-de-test/fr/univavignon/pokedex/api/package-summary.html)
+
 Ces badges indiquent respectivement :
 
 - **CircleCI** : Le statut des tests et de l'intégration continue de votre projet.
