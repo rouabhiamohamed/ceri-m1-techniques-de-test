@@ -36,7 +36,8 @@ jobs:
             git config --global user.name "CircleCI"
             git fetch origin gh-pages || echo "Branch does not exist yet"
             git checkout -B gh-pages
-            git rm -rf . || echo "Nothing to clean"
+            git rm -rf . || echo 
+          
             cp -r target/site/apidocs/* .
             git add .
             git commit -m "Publish Javadoc"
