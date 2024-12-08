@@ -53,7 +53,9 @@ jobs:
             cp -r target/site/* .  # Ensure all content (including checkstyle.html) is copied
             ls -R  # Debugging: List all files after copying
 
-            git add .
+            git add -A  # Ensure all files, including new ones, are staged
+            git status  # Debugging: Check which files are staged for commit
+
             git commit -m "Publish Javadoc and site content"
 
             git push --force https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
