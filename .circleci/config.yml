@@ -52,9 +52,8 @@ jobs:
             git checkout -B gh-pages
             git rm -rf . || echo "Nothing to clean"
             cp -r target/site/apidocs/* .
-            cp target/site/checkstyle.html .
             git add .
-            git commit -m "Publish Javadoc and Checkstyle Report"
+            git commit -m "Publish Javadoc "
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
       - store_artifacts:
           path: target/site/apidocs
