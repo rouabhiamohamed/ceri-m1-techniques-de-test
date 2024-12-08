@@ -40,7 +40,6 @@ jobs:
       - run:
           name: Wait for Checkstyle Report to be Generated
           command: |
-            # Wait and check for the file repeatedly
             count=0
             max_attempts=10
             while [ ! -f target/site/checkstyle.html ]; do
@@ -94,4 +93,3 @@ workflows:
             branches:
               only:
                 - master
-

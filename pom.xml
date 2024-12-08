@@ -131,7 +131,7 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>report</id>
+                        <id>generate-report</id>
                         <phase>site</phase>
                         <goals>
                             <goal>checkstyle</goal>
