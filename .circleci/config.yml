@@ -1,4 +1,5 @@
 version: 2.1
+
 orbs:
   codecov: codecov/codecov@3.0.0
 
@@ -32,18 +33,31 @@ jobs:
       - run:
           name: Publish Javadoc to GitHub Pages
           command: |
+            # Set up Git user information
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
-            git fetch origin gh-pages || echo "Branch does not exist yet"
+            
+            # Fetch the gh-pages branch, create it if it doesn't exist
+            git fetch origin gh-pages || echo "Branch does not exist yet, creating a new one."
             git checkout -B gh-pages
+
+            # Clean any existing content in the gh-pages branch
             git rm -rf . || echo "Nothing to clean"
-            cp -r target/site/apidocs/* .
+
+            # Copy the generated Javadoc files from the Maven target directory to the root of the gh-pages branch
+            cp -r target/site/apidocs/* .  # Ensure Javadoc content is in the root of the gh-pages branch
+            
+            # Add the files to Git
             git add .
             git commit -m "Publish Javadoc"
+
+            # Push to the gh-pages branch on GitHub
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
+
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
+
 workflows:
   version: 2
   build-and-test:
