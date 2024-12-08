@@ -39,7 +39,7 @@ jobs:
             find target/site/ -name "checkstyle.html"  # Specifically check for checkstyle.html
 
             echo "Checking if checkstyle.html is ignored by Git"
-            git check-ignore -v target/site/checkstyle.html
+            git check-ignore -v target/site/checkstyle.html  
 
       - run:
           name: Publish Javadoc and Checkstyle to GitHub Pages
@@ -57,13 +57,14 @@ jobs:
             echo "Before copying:"
             ls -R target/site/
 
-            cp -r target/site/* .  
+            # Force copy all files
+            cp -r -f target/site/* .  
 
             # Debug: List contents after copying
             echo "After copying:"
             ls -R  
 
-            git add -A  
+            git add -A -f  # Force add all files
             git status  
 
             git commit -m "Publish Javadoc and site content"
