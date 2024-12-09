@@ -75,7 +75,6 @@ jobs:
             git commit -m "Publish Javadoc and site content"
 
             git push --force https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
-
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
