@@ -26,10 +26,19 @@ jobs:
           file: target/site/jacoco/jacoco.xml
 
       - run:
-          name: Debug Javadoc Contents
+          name: Extensive Javadoc Debugging
           command: |
-            echo "Listing Javadoc files:"
-            ls -la target/site/apidocs
+            echo "Total number of files in apidocs:"
+            find target/site/apidocs | wc -l
+
+            echo "Detailed file listing:"
+            find target/site/apidocs -type f | sort
+
+            echo "Checking file permissions:"
+            find target/site/apidocs -type f -ls
+
+            echo "Checking for any potential hidden files or special characters:"
+            find target/site/apidocs -type f -name "\.*"
 
       - run:
           name: Publish Javadoc to GitHub Pages
@@ -47,24 +56,28 @@ jobs:
             # Remove everything except .git directory
             git rm -rf . || echo "No files to remove"
 
-            # Ensure the apidocs directory exists
-            if [ -d "target/site/apidocs" ]; then
-              # Copy all Javadoc files
-              cp -R target/site/apidocs/* .
+            # Verbose copying with debugging
+            echo "Copying Javadoc files..."
+            mkdir -p javadoc
             
-              # Debug: List copied files
-              echo "Files after copying:"
-              ls -la
-            else
-              echo "No Javadoc files found in target/site/apidocs"
-              exit 1
-            fi
+            # Copy with verbose output and error checking
+            cp -vR target/site/apidocs/* javadoc/ || echo "Copy failed with status $?"
+
+            # Detailed verification of copied files
+            echo "Files copied to javadoc directory:"
+            find javadoc -type f | sort
+
+            echo "Total number of files copied:"
+            find javadoc | wc -l
+
+            # Move all files to root if needed
+            mv javadoc/* . || echo "Move operation failed"
 
             # Add all files
             git add -A
 
             # Commit and push
-            git commit -m "Update Javadoc"
+            git commit -m "Update Javadoc: $(date)"
             git push -f https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages
 
       - store_artifacts:
