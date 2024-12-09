@@ -26,30 +26,46 @@ jobs:
           file: target/site/jacoco/jacoco.xml
 
       - run:
-          name: Publish to GitHub Pages
+          name: Debug Javadoc Contents
+          command: |
+            echo "Listing Javadoc files:"
+            ls -la target/site/apidocs
+
+      - run:
+          name: Publish Javadoc to GitHub Pages
           command: |
             # Configure Git
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
 
-            # Create and switch to gh-pages branch
-            git checkout --orphan gh-pages
+            # Fetch existing gh-pages branch or create a new one
+            git fetch origin gh-pages || true
+            
+            # Checkout gh-pages branch, creating it if it doesn't exist
+            git checkout -B gh-pages
 
-            # Remove all existing files
-            git rm -rf .
+            # Remove everything except .git directory
+            git rm -rf . || echo "No files to remove"
 
-            # Copy all site content
-            cp -R target/site/* .
+            # Ensure the apidocs directory exists
+            if [ -d "target/site/apidocs" ]; then
+              # Copy all Javadoc files
+              cp -R target/site/apidocs/* .
+            
+              # Debug: List copied files
+              echo "Files after copying:"
+              ls -la
+            else
+              echo "No Javadoc files found in target/site/apidocs"
+              exit 1
+            fi
 
-            # Set permissions
-            chmod -R 755 .
-
-            # Add all files forcefully
-            git add -A -f
+            # Add all files
+            git add -A
 
             # Commit and push
-            git commit -m "Publish documentation and reports"
-            git push --force https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages
+            git commit -m "Update Javadoc"
+            git push -f https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages
 
       - store_artifacts:
           path: target/site/apidocs
