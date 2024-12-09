@@ -6,6 +6,7 @@ executors:
   maven-executor:
     docker:
       - image: maven:3.8.6-openjdk-11
+
 jobs:
   build:
     executor: maven-executor
@@ -24,25 +25,36 @@ jobs:
           file: target/site/jacoco/jacoco.xml
       - run:
           name: Run Checkstyle
-          command: mvn checkstyle:check
+          command: mvn checkstyle:checkstyle
+      - run:
+          name: Copy Checkstyle Report
+          command: |
+            mkdir -p output/checkstyle
+            cp target/site/checkstyle.html output/checkstyle/
+      - store_artifacts:
+          path: output/checkstyle
+          destination: checkstyle
       - run:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
       - run:
-          name: Publish Javadoc to GitHub Pages
+          name: Publish Reports to GitHub Pages
           command: |
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
             git fetch origin gh-pages || echo "Branch does not exist yet"
             git checkout -B gh-pages
             git rm -rf . || echo "Nothing to clean"
-            cp -r target/site/apidocs/* .
-            git add .
-            git commit -m "Publish Javadoc"
+            mkdir -p reports
+            cp -r target/site/apidocs/* reports/apidocs/
+            cp target/site/checkstyle.html reports/
+            git add reports/
+            git commit -m "Publish Javadoc and Checkstyle report"
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
       - store_artifacts:
-          path: target/site/apidocs
-          destination: javadoc
+          path: target/site
+          destination: reports
+
 workflows:
   version: 2
   build-and-test:
