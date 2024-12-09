@@ -14,70 +14,46 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Clean Workspace
-          command: mvn clean
-      - run:
-          name: Run Tests
-          command: mvn test
-      - run:
-          name: Generate JaCoCo Report
-          command: mvn jacoco:report
+          name: Prepare Build Artifacts
+          command: |
+            mvn clean
+            mvn test
+            mvn jacoco:report
+            mvn checkstyle:check
+            mvn javadoc:javadoc
+
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
-      - run:
-          name: Run Checkstyle
-          command: mvn checkstyle:check
-      - run:
-          name: Generate Javadoc
-          command: mvn javadoc:javadoc
-      - run:
-          name: Set Correct Permissions
-          command: |
-            chmod -R 755 target/site  # Ensure correct permissions for all files
-      - run:
-          name: Debug Files Before Publishing
-          command: |
-            echo "Listing all files in target/site/"
-            ls -R target/site/
-            echo "Check for checkstyle.html in the list:"
-            find target/site/ -name "checkstyle.html"  # Specifically check for checkstyle.html
-
-            echo "Checking if checkstyle.html is ignored by Git"
-            git check-ignore -v target/site/checkstyle.html  
 
       - run:
-          name: Publish Javadoc and Checkstyle to GitHub Pages
+          name: Publish to GitHub Pages
           command: |
-            # Set up Git user information
+            # Configure Git
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
-            
-            git fetch origin gh-pages || echo "Branch does not exist yet, creating a new one."
-            git checkout -B gh-pages
 
-            git rm -rf . || echo "Nothing to clean"
+            # Create and switch to gh-pages branch
+            git checkout --orphan gh-pages
 
-            # Debug: List contents before copying
-            echo "Before copying:"
-            ls -R target/site/
+            # Remove all existing files
+            git rm -rf .
 
-            # Use rsync to copy all files
-            rsync -av --exclude='.git/' target/site/ .
+            # Copy all site content
+            cp -R target/site/* .
 
-            # Debug: List contents after copying
-            echo "After copying:"
-            ls -R  
+            # Set permissions
+            chmod -R 755 .
 
-            # Add all files, including ignored ones
+            # Add all files forcefully
             git add -A -f
-            git status  
 
-            git commit -m "Publish Javadoc and site content"
-            git push --force https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
+            # Commit and push
+            git commit -m "Publish documentation and reports"
+            git push --force https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages
+
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
-
 
 workflows:
   version: 2
