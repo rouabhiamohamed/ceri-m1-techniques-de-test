@@ -14,75 +14,19 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Prepare Build Artifacts
-          command: |
-            mvn clean
-            mvn test
-            mvn jacoco:report
-            mvn checkstyle:check
-            mvn javadoc:javadoc
-
+          name: Clean and Compile
+          command: mvn clean compile
+      - run:
+          name: Run Tests
+          command: mvn test
+      - run:
+          name: Generate JaCoCo Report
+          command: mvn jacoco:report
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
-
       - run:
-          name: Extensive Javadoc Debugging
-          command: |
-            echo "Total number of files in apidocs:"
-            find target/site/apidocs | wc -l
-
-            echo "Detailed file listing:"
-            find target/site/apidocs -type f | sort
-
-            echo "Checking file permissions:"
-            find target/site/apidocs -type f -ls
-
-            echo "Checking for any potential hidden files or special characters:"
-            find target/site/apidocs -type f -name "\.*"
-
-      - run:
-          name: Publish Javadoc to GitHub Pages
-          command: |
-            # Configure Git
-            git config --global user.email "ci@circleci.com"
-            git config --global user.name "CircleCI"
-
-            # Fetch existing gh-pages branch or create a new one
-            git fetch origin gh-pages || true
-            
-            # Checkout gh-pages branch, creating it if it doesn't exist
-            git checkout -B gh-pages
-
-            # Remove everything except .git directory
-            git rm -rf . || echo "No files to remove"
-
-            # Verbose copying with debugging
-            echo "Copying Javadoc files..."
-            mkdir -p javadoc
-            
-            # Copy with verbose output and error checking
-            cp -vR target/site/apidocs/* javadoc/ || echo "Copy failed with status $?"
-
-            # Detailed verification of copied files
-            echo "Files copied to javadoc directory:"
-            find javadoc -type f | sort
-
-            echo "Total number of files copied:"
-            find javadoc | wc -l
-
-            # Move all files to root if needed
-            mv javadoc/* . || echo "Move operation failed"
-
-            # Add all files
-            git add -A
-
-            # Commit and push
-            git commit -m "Update Javadoc: $(date)"
-            git push -f https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages
-
-      - store_artifacts:
-          path: target/site/apidocs
-          destination: javadoc
+          name: Run Checkstyle
+          command: mvn checkstyle:check
 
 workflows:
   version: 2
