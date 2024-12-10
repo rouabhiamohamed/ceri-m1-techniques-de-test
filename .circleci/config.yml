@@ -22,16 +22,20 @@ jobs:
           command: mvn jacoco:report
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
+
+      # Add these new steps to generate Checkstyle reports
       - run:
-          name: Run Checkstyle
-          command: mvn checkstyle:check
+          name: Generate Checkstyle Report
+          command: |
+            mvn checkstyle:check
+            mvn checkstyle:checkstyle
 
       - run:
           name: Debug Directory Structure
           command: |
             pwd
-            ls -R target/site
             find . -name "checkstyle.html"
+            ls -R target
 
       - run:
           name: Publish Javadoc and Checkstyle to GitHub Pages
@@ -46,8 +50,13 @@ jobs:
             mkdir -p ./apidocs ./checkstyle
             
             # Verbose copy with debugging
-            cp -v target/site/apidocs/* ./apidocs/ || echo "No API docs found"
-            cp -v target/site/checkstyle.html ./checkstyle/ || echo "Checkstyle HTML not found"
+            cp -r target/site/apidocs/* ./apidocs/ || echo "No API docs found"
+            
+            # Try multiple possible locations for checkstyle report
+            cp -v target/site/checkstyle.html ./checkstyle/ 2>/dev/null || \
+            cp -v target/checkstyle.html ./checkstyle/ 2>/dev/null || \
+            cp -v target/checkstyle/checkstyle.html ./checkstyle/ 2>/dev/null || \
+            echo "Checkstyle HTML not found"
             
             # List what was copied
             ls -l ./checkstyle
@@ -55,9 +64,11 @@ jobs:
             git add .
             git commit -m "Publish Javadoc and Checkstyle Reports"
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
+
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
+
 workflows:
   version: 2
   build-and-test:
