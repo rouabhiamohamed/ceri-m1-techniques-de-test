@@ -31,15 +31,11 @@ jobs:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
       - run:
+          name: Ensure checkstyle.html is Not Ignored
+          command: echo '!target/site/checkstyle.html' >> .gitignore
+      - run:
           name: Set Correct Permissions
           command: chmod -R 755 target/site  # Ensure correct permissions for all files
-
-      - run:
-          name: Ensure checkstyle.html is Not Ignored
-          command: |
-            echo '!target/site/checkstyle.html' >> .gitignore
-            echo "Ensured checkstyle.html is not ignored by Git"
-
       - run:
           name: Debug Files Before Publishing
           command: |
@@ -49,7 +45,15 @@ jobs:
             find target/site/ -name "checkstyle.html"  # Specifically check for checkstyle.html
 
             echo "Checking if checkstyle.html is ignored by Git"
-            git check-ignore -v target/site/checkstyle.html  
+            git check-ignore -v target/site/checkstyle.html
+
+            echo "Changing directory to target/site/"
+            cd target/site/
+            ls -R  # List all files again to ensure we're in the right directory
+
+            echo "Forcing add of checkstyle.html"
+            git add -f checkstyle.html
+            git status  # Show status to confirm checkstyle.html is staged
 
       - run:
           name: Publish Javadoc and Checkstyle to GitHub Pages
@@ -60,11 +64,16 @@ jobs:
             git fetch origin gh-pages || echo "Branch does not exist yet"
             git checkout -B gh-pages
             git rm -rf . || echo "Nothing to clean"
-            
+
             # Use rsync to copy all files from target/site
             rsync -av --exclude='.git/' target/site/ .
+
+            # Check if checkstyle.html is in the directory and force add it
+            if [ -f checkstyle.html ]; then
+              git add -f checkstyle.html
+            fi
             
-            # Force add all files, ensuring they are committed
+            # Force add all other files
             git add -A -f
             git commit -m "Publish Javadoc and site content"
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
