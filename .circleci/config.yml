@@ -29,7 +29,7 @@ jobs:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
       - run:
-          name: Publish Javadoc to GitHub Pages
+          name: Publish Javadoc and Checkstyle to GitHub Pages
           command: |
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
@@ -37,9 +37,9 @@ jobs:
             git checkout -B gh-pages
             git rm -rf . || echo "Nothing to clean"
             cp -r target/site/apidocs/* .
-            cp -r target/site/* .
+            cp -r target/site/checkstyle.html .
             git add .
-            git commit -m "Publish Javadoc"
+            git commit -m "Publish Javadoc and Checkstyle Reports"
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
       - store_artifacts:
           path: target/site/apidocs
