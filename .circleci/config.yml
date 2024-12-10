@@ -1,4 +1,5 @@
 version: 2.1
+
 orbs:
   codecov: codecov/codecov@3.0.0
 
@@ -6,6 +7,7 @@ executors:
   maven-executor:
     docker:
       - image: maven:3.8.6-openjdk-11
+
 jobs:
   build:
     executor: maven-executor
@@ -29,6 +31,10 @@ jobs:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
       - run:
+          name: Set Correct Permissions
+          command: chmod -R 755 target/site  # Ensure correct permissions for all files
+
+      - run:
           name: Publish Javadoc to GitHub Pages
           command: |
             git config --global user.email "ci@circleci.com"
@@ -36,13 +42,18 @@ jobs:
             git fetch origin gh-pages || echo "Branch does not exist yet"
             git checkout -B gh-pages
             git rm -rf . || echo "Nothing to clean"
-            cp -r target/site/apidocs/* .
-            git add .
-            git commit -m "Publish Javadoc"
+            
+            # Copy all files from target/site
+            cp -r target/site/* .
+            
+            # Force add all files, ensuring they are committed
+            git add -A -f
+            git commit -m "Publish Javadoc and site content"
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
+
 workflows:
   version: 2
   build-and-test:
