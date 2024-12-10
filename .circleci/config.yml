@@ -25,9 +25,7 @@ jobs:
       - run:
           name: Run Checkstyle
           command: mvn checkstyle:check
-      - run:
-          name: Generate Checkstyle Report
-          command: mvn checkstyle:checkstyle site
+
       - run:
           name: Debug Directory Structure
           command: |
