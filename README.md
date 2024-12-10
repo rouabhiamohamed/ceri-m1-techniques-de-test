@@ -8,8 +8,8 @@
 ## Badges
 [![CircleCI](https://circleci.com/gh/rouabhiamohamed/ceri-m1-techniques-de-test.svg?style=shield)](https://circleci.com/gh/rouabhiamohamed/ceri-m1-techniques-de-test)
 [![codecov](https://codecov.io/gh/rouabhiamohamed/ceri-m1-techniques-de-test/graph/badge.svg?token=WSX5HZDM4U)](https://codecov.io/gh/rouabhiamohamed/ceri-m1-techniques-de-test)
-[![Checkstyle](https://img.shields.io/badge/Checkstyle-Report-blue)](https://rouabhiamohamed.github.io/ceri-m1-techniques-de-test/target/site/checkstyle.html)
-[![Javadoc](https://img.shields.io/badge/Javadoc-Link-blue)](https://rouabhiamohamed.github.io/ceri-m1-techniques-de-test/fr/univavignon/pokedex/api/package-summary.html)
+[![Checkstyle](https://img.shields.io/badge/Checkstyle-Report-blue)](https://rouabhiamohamed.github.io/ceri-m1-techniques-de-test/checkstyle/checkstyle.html)
+[![Javadoc](https://img.shields.io/badge/Javadoc-Link-blue)](https://rouabhiamohamed.github.io/ceri-m1-techniques-de-test/apidocs)
 ## Documentation
 
 
