@@ -26,12 +26,14 @@ jobs:
           name: Run Checkstyle
           command: mvn checkstyle:check
       - run:
-          name: Generate Javadoc
-          command: mvn javadoc:javadoc
-
-      - run:
           name: Generate Checkstyle Report
-          command: mvn checkstyle:checkstyle
+          command: mvn checkstyle:checkstyle site
+      - run:
+          name: Debug Directory Structure
+          command: |
+            pwd
+            ls -R target/site
+            find . -name "checkstyle.html"
 
       - run:
           name: Publish Javadoc and Checkstyle to GitHub Pages
@@ -41,9 +43,17 @@ jobs:
             git fetch origin gh-pages || echo "Branch does not exist yet"
             git checkout -B gh-pages
             git rm -rf . || echo "Nothing to clean"
+            
+            # Explicitly create directories
             mkdir -p ./apidocs ./checkstyle
-            cp -r target/site/apidocs/* ./apidocs/
-            cp -r target/site/* ./checkstyle/
+            
+            # Verbose copy with debugging
+            cp -v target/site/apidocs/* ./apidocs/ || echo "No API docs found"
+            cp -v target/site/checkstyle.html ./checkstyle/ || echo "Checkstyle HTML not found"
+            
+            # List what was copied
+            ls -l ./checkstyle
+            
             git add .
             git commit -m "Publish Javadoc and Checkstyle Reports"
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f

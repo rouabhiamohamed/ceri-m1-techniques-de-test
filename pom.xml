@@ -113,8 +113,8 @@
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
-                    <outputFile>${project.build.directory}/checkstyle-output.xml</outputFile>
-                    <outputDirectory>${project.build.directory}/checkstyle</outputDirectory>
+                    <outputFile>${project.build.directory}/site/checkstyle.html</outputFile>
+                    <outputDirectory>${project.build.directory}/site</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
