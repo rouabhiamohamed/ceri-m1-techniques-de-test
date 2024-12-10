@@ -114,7 +114,6 @@
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
                     <outputFile>${project.build.directory}/site/checkstyle.html</outputFile>
-                    <outputDirectory>${project.build.directory}/site</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
