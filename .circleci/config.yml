@@ -23,7 +23,6 @@ jobs:
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
 
-      # Add these new steps to generate Checkstyle reports
       - run:
           name: Generate Checkstyle Report
           command: |
@@ -38,7 +37,7 @@ jobs:
             ls -R target
 
       - run:
-          name: Publish Javadoc and Checkstyle to GitHub Pages
+          name: Publish to GitHub Pages
           command: |
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
@@ -46,25 +45,12 @@ jobs:
             git checkout -B gh-pages
             git rm -rf . || echo "Nothing to clean"
             
-            # Explicitly create directories
-            mkdir -p ./apidocs ./checkstyle
-            
-            # Verbose copy with debugging
-            cp -r target/site/apidocs/* ./apidocs/ || echo "No API docs found"
-            
-            # Try multiple possible locations for checkstyle report
-            cp -v target/site/checkstyle.html ./checkstyle/ 2>/dev/null || \
-            cp -v target/checkstyle.html ./checkstyle/ 2>/dev/null || \
-            cp -v target/checkstyle/checkstyle.html ./checkstyle/ 2>/dev/null || \
-            echo "Checkstyle HTML not found"
-            
-            # List what was copied
-            ls -l ./checkstyle
-            
-            git add .
-            git commit -m "Publish Javadoc and Checkstyle Reports"
-            git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
+            cp -r target/site/* .            
+            ls -R
 
+            git add .
+            git commit -m "Publish Site Reports"
+            git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
