@@ -43,7 +43,7 @@ jobs:
             git rm -rf . || echo "Nothing to clean"
             mkdir -p ./apidocs ./checkstyle
             cp -r target/site/apidocs/* ./apidocs/
-            cp -r target/checkstyle/* ./checkstyle/
+            cp -r target/site/* ./checkstyle/
             git add .
             git commit -m "Publish Javadoc and Checkstyle Reports"
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
