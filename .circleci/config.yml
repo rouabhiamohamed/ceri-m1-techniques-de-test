@@ -1,5 +1,4 @@
 version: 2.1
-
 orbs:
   codecov: codecov/codecov@3.0.0
 
@@ -7,7 +6,6 @@ executors:
   maven-executor:
     docker:
       - image: maven:3.8.6-openjdk-11
-
 jobs:
   build:
     executor: maven-executor
@@ -30,58 +28,22 @@ jobs:
       - run:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
-      - run:
-          name: Ensure checkstyle.html is Not Ignored
-          command: echo '!target/site/checkstyle.html' >> .gitignore
-      - run:
-          name: Set Correct Permissions
-          command: chmod -R 755 target/site  # Ensure correct permissions for all files
-      - run:
-          name: Debug Files Before Publishing
-          command: |
-            echo "Listing all files in target/site/"
-            ls -R target/site/
-            echo "Check for checkstyle.html in the list:"
-            find target/site/ -name "checkstyle.html"  # Specifically check for checkstyle.html
-
-            echo "Checking if checkstyle.html is ignored by Git"
-            git check-ignore -v target/site/checkstyle.html
-
-            echo "Changing directory to target/site/"
-            cd target/site/
-            ls -R  # List all files again to ensure we're in the right directory
-
-            echo "Forcing add of checkstyle.html"
-            git add -f checkstyle.html
-            git status  # Show status to confirm checkstyle.html is staged
 
       - run:
-          name: Publish Javadoc and Checkstyle to GitHub Pages
+          name: Publish Javadoc to GitHub Pages
           command: |
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
-            
             git fetch origin gh-pages || echo "Branch does not exist yet"
             git checkout -B gh-pages
             git rm -rf . || echo "Nothing to clean"
-
-            # Use rsync to copy all files from target/site
-            rsync -av --exclude='.git/' target/site/ .
-
-            # Check if checkstyle.html is in the directory and force add it
-            if [ -f checkstyle.html ]; then
-              git add -f checkstyle.html
-            fi
-            
-            # Force add all other files
-            git add -A -f
-            git commit -m "Publish Javadoc and site content"
+            cp -r target/site/apidocs/* .
+            git add .
+            git commit -m "Publish Javadoc"
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
-
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
-
 workflows:
   version: 2
   build-and-test:
