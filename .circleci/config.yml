@@ -35,21 +35,40 @@ jobs:
           command: chmod -R 755 target/site  # Ensure correct permissions for all files
 
       - run:
-          name: Publish Javadoc to GitHub Pages
+          name: Ensure checkstyle.html is Not Ignored
+          command: |
+            echo '!target/site/checkstyle.html' >> .gitignore
+            echo "Ensured checkstyle.html is not ignored by Git"
+
+      - run:
+          name: Debug Files Before Publishing
+          command: |
+            echo "Listing all files in target/site/"
+            ls -R target/site/
+            echo "Check for checkstyle.html in the list:"
+            find target/site/ -name "checkstyle.html"  # Specifically check for checkstyle.html
+
+            echo "Checking if checkstyle.html is ignored by Git"
+            git check-ignore -v target/site/checkstyle.html  
+
+      - run:
+          name: Publish Javadoc and Checkstyle to GitHub Pages
           command: |
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
+            
             git fetch origin gh-pages || echo "Branch does not exist yet"
             git checkout -B gh-pages
             git rm -rf . || echo "Nothing to clean"
             
-            # Copy all files from target/site
-            cp -r target/site/* .
+            # Use rsync to copy all files from target/site
+            rsync -av --exclude='.git/' target/site/ .
             
             # Force add all files, ensuring they are committed
             git add -A -f
             git commit -m "Publish Javadoc and site content"
             git push https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
+
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
