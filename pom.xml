@@ -110,7 +110,7 @@
                 </dependencies>
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
-                    <outputDirectory>target/site</outputDirectory>
+                    <outputDirectory>${target/site}</outputDirectory>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
