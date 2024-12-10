@@ -1,0 +1,48 @@
+@options
+@packages
+-encoding
+'UTF-8'
+-protected
+-source
+'11'
+-sourcepath
+'/root/project/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2024. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/root/project/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'pokedex-api 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/en/java/javase/11/docs/api' '/root/project/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'pokedex-api 1.0-SNAPSHOT API'
+fr.univavignon.pokedex.api
+/root/project/src/main/java = 1733794674618
+/root/project/target/site/apidocs/element-list = 1733794701425
+/root/project/target/site/apidocs/constant-values.html = 1733794701438
+/root/project/target/site/apidocs/serialized-form.html = 1733794701444
+/root/project/target/site/apidocs/overview-tree.html = 1733794701485
+/root/project/target/site/apidocs/package-search-index.js = 1733794701498
+/root/project/target/site/apidocs/package-search-index.zip = 1733794701502
+/root/project/target/site/apidocs/type-search-index.js = 1733794701503
+/root/project/target/site/apidocs/type-search-index.zip = 1733794701503
+/root/project/target/site/apidocs/member-search-index.js = 1733794701503
+/root/project/target/site/apidocs/member-search-index.zip = 1733794701503
+/root/project/target/site/apidocs/index-all.html = 1733794701504
+/root/project/target/site/apidocs/allclasses-index.html = 1733794701509
+/root/project/target/site/apidocs/allpackages-index.html = 1733794701510
+/root/project/target/site/apidocs/deprecated-list.html = 1733794701513
+/root/project/target/site/apidocs/allclasses.html = 1733794701514
+/root/project/target/site/apidocs/index.html = 1733794701515
+/root/project/target/site/apidocs/help-doc.html = 1733794701516
+/root/project/target/site/apidocs/stylesheet.css = 1733794701517
+/root/project/target/site/apidocs/script.js = 1733794701518
+/root/project/target/site/apidocs/search.js = 1733794701519

@@ -1,0 +1,13 @@
+/root/project/src/main/java/fr/univavignon/pokedex/api/PokedexException.java
+/root/project/src/main/java/fr/univavignon/pokedex/api/Team.java
+/root/project/src/main/java/fr/univavignon/pokedex/api/PokemonComparators.java
+/root/project/src/main/java/fr/univavignon/pokedex/api/PokemonTrainer.java
+/root/project/src/main/java/fr/univavignon/pokedex/api/PokemonTrainerFactory.java
+/root/project/src/main/java/fr/univavignon/pokedex/api/IPokedexFactory.java
+/root/project/src/main/java/fr/univavignon/pokedex/api/IPokemonTrainerFactory.java
+/root/project/src/main/java/fr/univavignon/pokedex/api/Pokedex.java
+/root/project/src/main/java/fr/univavignon/pokedex/api/IPokedex.java
+/root/project/src/main/java/fr/univavignon/pokedex/api/IPokemonFactory.java
+/root/project/src/main/java/fr/univavignon/pokedex/api/Pokemon.java
+/root/project/src/main/java/fr/univavignon/pokedex/api/PokemonMetadata.java
+/root/project/src/main/java/fr/univavignon/pokedex/api/IPokemonMetadataProvider.java
