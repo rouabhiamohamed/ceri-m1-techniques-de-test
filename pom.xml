@@ -119,6 +119,7 @@
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
                     <outputFile>${project.build.directory}/site/checkstyle.html</outputFile>
+
                 </configuration>
                 <executions>
                     <execution>
@@ -133,6 +134,26 @@
                 </executions>
 
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <outputFile>${project.build.directory}/checkstyle-result.xml</outputFile>
+                    <consoleOutput>true</consoleOutput>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>com.github.bordertech.buildtools</groupId>
                 <artifactId>badger</artifactId>
