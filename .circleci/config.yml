@@ -34,15 +34,21 @@ jobs:
             mvn javadoc:javadoc
             mvn checkstyle:checkstyle
             
-            # Check if checkstyle-result.xml exists
+            # Debug: list files and check checkstyle result
+            echo "Listing target directory contents:"
+            ls -l target/
+            echo "Checking for checkstyle-result.xml:"
+            find . -name "checkstyle-result.xml"
+
+      # Check if checkstyle-result.xml exists
             if [ -f target/checkstyle-result.xml ]; then
-              mvn com.github.bordertech.buildtools:badger:badges \
-                -Dbadger.outputDir=target/badges \
-                -Dbadger.inputFiles=target/checkstyle-result.xml
-            else
-              echo "Checkstyle result file not found"
-              exit 1
-            fi
+            mvn com.github.bordertech.buildtools:badger:badges \
+            -Dbadger.outputDir=target/badges \
+            -Dbadger.inputFiles=target/checkstyle-result.xml
+           else
+           echo "Checkstyle result file not found"
+           exit 1
+           fi
 
       - run:
           name: Prepare GitHub Pages
