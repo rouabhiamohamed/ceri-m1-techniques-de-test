@@ -53,7 +53,8 @@ jobs:
             ls -R target/site/
 
             # Use rsync to copy all files
-            rsync -av --exclude='.git/' target/site/ .
+            #rsync -av --exclude='.git/' target/site/ .
+            find target/site/ -type f ! -path "target/site/.git/*" -exec cp --parents {} . \;
 
             # Debug: List contents after copying
             echo "After copying:"
