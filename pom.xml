@@ -136,7 +136,19 @@
                 <groupId>com.github.bordertech.buildtools</groupId>
                 <artifactId>badger</artifactId>
                 <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>badges</goal>
+                        </goals>
+                        <configuration>
+                            <outputDir>${project.build.directory}/badges</outputDir>
+                            <inputFiles>${project.build.directory}/checkstyle-result.xml</inputFiles>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
+
         </plugins>
     </build>
 </project>
