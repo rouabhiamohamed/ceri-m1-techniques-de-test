@@ -112,3 +112,35 @@ Assurez-vous de respecter les conventions de style, de gestion de code et de ré
 
 2. **Codecov Badge** :
     - Vous devez connecter votre projet à Codecov. Une fois cela fait, vous pouvez obtenir le badge Codecov sur votre tableau de bord de Codecov.
+# Rapport de Revue de Code : RocketPokemonFactory
+
+## Analyse Générale
+L'implémentation de la **RocketPokemonFactory** présente plusieurs problèmes.
+
+---
+
+## Problèmes Majeurs
+
+### 1. Génération de Statistiques Aléatoires
+
+- **Méthode problématique :** `generateRandomStat()`
+   - Utilise une boucle avec **1 million d'itérations** pour générer un nombre aléatoire.
+   - **Impact sur les performances :** Extrêmement inefficace et coûteux en ressources.
+   - **Fiabilité :** Mécanisme non standard et imprévisible pour la génération des statistiques.
+
+---
+
+### 2. Gestion des Noms de Pokémon
+
+- **Mapping incomplet :** La map `index2name` est inachevée (`// TODO : Gotta map them all !`).
+- **Comportement par défaut :**
+   - Utilise `"MISSINGNO"` comme nom par défaut pour les indices non mappés.
+   - **Risque :** Peut générer des Pokémon avec des noms incorrects ou incohérents.
+
+---
+
+### 3. Logique de Génération des IVs
+
+- **Indices négatifs (ex. -1) :** Attribue des statistiques maximales (1000).
+- **Autres indices :** Génère des statistiques de manière aléatoire via un processus computationnellement coûteux.
+- **Indices positifs :** Fixe les IVs à 1, ce qui n'est pas réaliste.
