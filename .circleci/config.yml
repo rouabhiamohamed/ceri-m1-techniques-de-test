@@ -34,20 +34,7 @@ jobs:
       - run:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
-      - run:
-          name: Set Correct Permissions
-          command: |
-            chmod -R 755 target/site  # Ensure correct permissions for all files
-      - run:
-          name: Debug Files Before Publishing
-          command: |
-            echo "Listing all files in target/site/"
-            ls -R target/site/
-            echo "Check for checkstyle.html in the list:"
-            find target/site/ -name "checkstyle.html"  # Specifically check for checkstyle.html
 
-            echo "Checking if checkstyle.html is ignored by Git"
-            git check-ignore -v target/site/checkstyle.html  
 
       - run:
           name: Publish Javadoc and Checkstyle to GitHub Pages
