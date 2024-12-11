@@ -1,82 +1,52 @@
-version: 2.1
-
-orbs:
-  codecov: codecov/codecov@3.0.0
-
-executors:
-  maven-executor:
+maven-executor:
     docker:
-      - image: maven:3.8.6-openjdk-11
-
-jobs:
-  build:
-    executor: maven-executor
-    steps:
-      - checkout
-      - run:
-          name: Clean Workspace
-          command: mvn clean
-      - run:
-          name: Run Tests
-          command: mvn test
-      - run:
-          name: Generate JaCoCo Report
-          command: mvn jacoco:report
-      - codecov/upload:
-          file: target/site/jacoco/jacoco.xml
-      - run:
-          name: Run Checkstyle
-          command: mvn checkstyle:check
-      - run:
-          name: Run Checkstyle
-          command: mvn checkstyle:checkstyle
-
-      - run:
-          name: Generate Javadoc
-          command: mvn javadoc:javadoc
-
-
-      - run:
-          name: Publish Javadoc and Checkstyle to GitHub Pages
-          command: |
-            # Set up Git user information
-            git config --global user.email "ci@circleci.com"
-            git config --global user.name "CircleCI"
-            
-            git fetch origin gh-pages || echo "Branch does not exist yet, creating a new one."
-            git checkout -B gh-pages
-
-            git rm -rf . || echo "Nothing to clean"
-
-            # Debug: List contents before copying
-            echo "Before copying:"
-            ls -R target/site/
-
-            # Use rsync to copy all files
-            #rsync -av --exclude='.git/' target/site/ .
-            find target/site/ -type f ! -path "target/site/.git/*" -exec cp --parents {} . \;
-
-            # Debug: List contents after copying
-            echo "After copying:"
-            ls -R  
-
-            # Add all files, including ignored ones
-            git add -A -f
-            git status  
-
-            git commit -m "Publish Javadoc and site content"
-
-            git push --force https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
-      - store_artifacts:
-          path: target/site/apidocs
-          destination: javadoc
-
-workflows:
-  version: 2
-  build-and-test:
+    - image: maven:3.8.6-openjdk-11
     jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - master
+       build:
+         executor: maven-executor
+       name: Run Checkstyle
+       command: mvn checkstyle:check
+        - run:
+        name: Generate Documentation
+        command: |
+             mvn javadoc:javadoc
+             mvn checkstyle:checkstyle
+         - run:
+           name: Prepare GitHub Pages
+           command: |
+             git config --global user.email "ci@circleci.com"
+             git config --global user.name "CircleCI"
+          
+             # Clone the entire repository
+             git clone https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git repo
+             
+             # Switch to gh-pages branch, create if not exists
+             cd repo
+             git checkout gh-pages || git checkout -b gh-pages
+             
+             # Remove existing contents
+             git rm -rf . || echo "No existing files to remove"
+             
+             # Copy new documentation
+             mkdir -p apidocs
+             cp -r ../target/site/apidocs/* apidocs/
+             cp ../target/site/checkstyle.html checkstyle.html
+             
+             # Add, commit, and push
+             git add .
+      
+             git commit -m "Update documentation: Javadoc and Checkstyle Reports"
+             git push origin gh-pages
+       - store_artifacts:
+           path: target/site/apidocs
+           destination: javadoc
+       - store_artifacts:
+           path: target/site/checkstyle.html
+           destination: checkstyle
+    workflows:
+       version: 2
+       build-and-test:
+       filters:
+         branches:
+           only:
+             - master
