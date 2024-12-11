@@ -30,11 +30,20 @@ jobs:
       - run:
           name: Generate Documentation and Badges
           command: |
+            mkdir -p target/badges
             mvn javadoc:javadoc
             mvn checkstyle:checkstyle
-            mvn com.github.bordertech.buildtools:badger:badges \
-              -Dbadger.outputDir=target/badges \
-              -Dbadger.inputFiles=target/checkstyle-result.xml
+            
+            # Check if checkstyle-result.xml exists
+            if [ -f target/checkstyle-result.xml ]; then
+              mvn com.github.bordertech.buildtools:badger:badges \
+                -Dbadger.outputDir=target/badges \
+                -Dbadger.inputFiles=target/checkstyle-result.xml
+            else
+              echo "Checkstyle result file not found"
+              exit 1
+            fi
+
       - run:
           name: Prepare GitHub Pages
           command: |
@@ -57,10 +66,12 @@ jobs:
             mkdir -p checkstyle
             cp -r ../target/site/* checkstyle/
             cp -r ../target/site/apidocs/* apidocs/
-            mkdir -p checkstyle/badges
-            cp -r target/badges/* checkstyle/badges/
             
-          
+            # Ensure badges directory exists
+            mkdir -p checkstyle/badges
+            if [ -d ../target/badges ]; then
+              cp -r ../target/badges/* checkstyle/badges/
+            fi
             
             # Add, commit, and push
             git add .
