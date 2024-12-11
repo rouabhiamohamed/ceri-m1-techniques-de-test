@@ -127,6 +127,44 @@
                 </executions>
 
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-checkstyle-badge</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>bash</executable>
+                            <arguments>
+                                <argument>-c</argument>
+                                <argument>
+                                    <![CDATA[
+                                ERRORS=$(grep -o "<error " target/checkstyle-results.xml | wc -l);
+                                if [ "$ERRORS" -eq 0 ]; then
+                                    COLOR="brightgreen";
+                                    STATUS="Passing";
+                                elif [ "$ERRORS" -le 10 ]; then
+                                    COLOR="yellow";
+                                    STATUS="Warning";
+                                else
+                                    COLOR="red";
+                                    STATUS="Failing";
+                                fi;
+                                echo "Checkstyle Errors: $ERRORS";
+                                echo "Generating badge...";
+                                curl -o target/site/checkstyle-badge.svg "https://img.shields.io/badge/Checkstyle-$STATUS-$COLOR";
+                                ]]>
+                                </argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
