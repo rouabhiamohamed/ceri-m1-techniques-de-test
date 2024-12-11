@@ -32,7 +32,6 @@ jobs:
           command: |
             mvn javadoc:javadoc
             mvn checkstyle:checkstyle
-            
             mvn com.github.bordertech.buildtools:badger:badges \
               -Dbadger.outputDir=target/badges \
               -Dbadger.inputFiles=target/checkstyle-result.xml
