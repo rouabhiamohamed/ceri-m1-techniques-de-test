@@ -87,6 +87,9 @@ jobs:
       - store_artifacts:
           path: target/site
           destination: site-reports
+      - store_artifacts:
+          path: target/site/checkstyle
+          destination: badge
 
 workflows:
   version: 2
