@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Generate and Publish Checkstyle Badge
           command: |
-            ERRORS=$(grep -o "<error " target/checkstyle-results.xml | wc -l)
+            ERRORS=$(grep -o "<error " target/checkstyle-result.xml | wc -l)
             if [ "$ERRORS" -eq 0 ]; then
               COLOR="brightgreen"
             elif [ "$ERRORS" -le 10 ]; then
