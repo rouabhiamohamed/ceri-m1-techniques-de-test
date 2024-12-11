@@ -44,10 +44,10 @@ jobs:
             mvn com.github.bordertech.buildtools:badger:badges \
             -Dbadger.outputDir=target/badges \
             -Dbadger.inputFiles=target/checkstyle-result.xml
-           else
-           echo "Checkstyle result file not found"
-           exit 1
-           fi
+            else
+            echo "Checkstyle result file not found"
+            exit 1
+            fi
 
       - run:
           name: Prepare GitHub Pages
