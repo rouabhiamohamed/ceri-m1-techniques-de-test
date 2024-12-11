@@ -54,8 +54,8 @@ jobs:
             # Copy new documentation
             mkdir -p apidocs
             cp -r ../target/site/apidocs/* apidocs/
-           mkdir -p checkstyle/badges
-           cp -r target/badges/* checkstyle/badges/
+            mkdir -p checkstyle/badges
+            cp -r target/badges/* checkstyle/badges/
             
             # Copy entire Checkstyle site
             mkdir -p checkstyle
