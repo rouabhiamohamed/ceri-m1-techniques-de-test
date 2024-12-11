@@ -28,6 +28,23 @@ jobs:
           name: Run Checkstyle
           command: mvn checkstyle:check
       - run:
+          name: Generate and Publish Checkstyle Badge
+          command: |
+            ERRORS=$(grep -o "<error " target/checkstyle-results.xml | wc -l)
+            if [ "$ERRORS" -eq 0 ]; then
+              COLOR="brightgreen"
+            elif [ "$ERRORS" -le 10 ]; then
+              COLOR="yellow"
+            else
+              COLOR="red"
+            fi
+            curl -o checkstyle-badge.svg "https://img.shields.io/badge/Checkstyle-$ERRORS%20errors-$COLOR"
+            cp checkstyle-badge.svg .
+            git add checkstyle-badge.svg
+            git commit -m "Update Checkstyle Badge"
+            git push -f git@github.com:rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages
+
+      - run:
           name: Generate Javadoc
           command: mvn javadoc:javadoc
       - run:
