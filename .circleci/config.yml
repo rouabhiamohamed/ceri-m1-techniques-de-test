@@ -27,6 +27,9 @@ jobs:
       - run:
           name: Run Checkstyle
           command: mvn checkstyle:check
+      - run:
+          name: Run Checkstyle
+          command: mvn checkstyle:checkstyle
 
       - run:
           name: Generate Javadoc
