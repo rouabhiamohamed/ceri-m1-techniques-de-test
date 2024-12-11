@@ -31,6 +31,7 @@ jobs:
           name: Generate and Publish Checkstyle Badge
           command: |
             # Find the checkstyle-result.xml file
+                  cp ../target/checkstyle-result.xml .
             XML_FILE=$(find . -name "checkstyle-result.xml" | head -n 1)
             
             if [ -z "$XML_FILE" ]; then
