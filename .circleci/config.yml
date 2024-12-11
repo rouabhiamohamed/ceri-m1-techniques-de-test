@@ -42,7 +42,7 @@ jobs:
             echo "Listing all files in target/site/"
             ls -R target/site/
             echo "Check for checkstyle.html in the list:"
-            find target/site/ -name "checkstyle.html"  # Specifically check for checkstyle.html
+            find target/site/ -name "checkstyle.html"  
 
             echo "Checking if checkstyle.html is ignored by Git"
             git check-ignore -v target/site/checkstyle.html  
