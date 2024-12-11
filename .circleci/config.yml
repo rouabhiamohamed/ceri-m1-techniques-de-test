@@ -27,27 +27,7 @@ jobs:
       - run:
           name: Run Checkstyle
           command: mvn checkstyle:check
-      - run:
-          name: Generate and Publish Checkstyle Badge
-          command: |
-            # Find the checkstyle-result.xml file
-            XML_FILE=$(find . -name "checkstyle-result.xml" | head -n 1)
-            
-            if [ -z "$XML_FILE" ]; then
-              echo "Checkstyle results XML not found!"
-              exit 1
-            fi
-            
-            ERRORS=$(grep -o "<error " "$XML_FILE" | wc -l)
-            if [ "$ERRORS" -eq 0 ]; then
-              COLOR="brightgreen"
-            elif [ "$ERRORS" -le 10 ]; then
-              COLOR="yellow"
-            else
-              COLOR="red"
-            fi
-            
-            curl -o checkstyle-badge.svg "https://img.shields.io/badge/Checkstyle-$ERRORS%20errors-$COLOR"
+
 
       - run:
           name: Generate Javadoc
