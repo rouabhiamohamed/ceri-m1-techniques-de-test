@@ -25,59 +25,30 @@ jobs:
           file: target/site/jacoco/jacoco.xml
       - run:
           name: Run Checkstyle
-          command: mvn checkstyle:checkstyle
+          command: mvn checkstyle:check
       - run:
-          name: Generate Documentation and Badges
+          name: Generate Badges
           command: |
-            mkdir -p target/badges
-            mvn javadoc:javadoc
-            mvn checkstyle:checkstyle
-            
-            # Debug: list files and check checkstyle result
-            echo "Listing target directory contents:"
-            ls -l target/
-            echo "Checking for checkstyle-result.xml:"
-            find . -name "checkstyle-result.xml"
-
-            if [ -f target/checkstyle-result.xml ]; then
-              mvn com.github.bordertech.buildtools:badger:badges \
-                -Dbadger.outputDir=target/badges \
-                -Dbadger.inputFiles=target/checkstyle-result.xml
-            else
-              echo "Checkstyle result file not found"
-              exit 1
-            fi
-
+            mvn com.github.bordertech.buildtools:badger:badges \
+              -Dbadger.outputDir=target/badges \
+              -Dbadger.inputFiles=target/checkstyle-result.xml
       - run:
           name: Prepare GitHub Pages
           command: |
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
-            
-            # Clone the entire repository
             git clone https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git repo
-            
-            # Switch to gh-pages branch, create if not exists
             cd repo
             git checkout gh-pages || git checkout -b gh-pages
-            
-            # Remove existing contents
             git rm -rf . || echo "No existing files to remove"
-            
-            # Copy new documentation
             mkdir -p apidocs
-            # Copy entire Checkstyle site
             mkdir -p checkstyle
-            cp -r /target/site/* checkstyle/
-            cp -r /target/site/apidocs/* apidocs/
-            
-            # Ensure badges directory exists
+            cp -r ../target/site/* checkstyle/
+            cp -r ../target/site/apidocs/* apidocs/
             mkdir -p checkstyle/badges
-            if [ -d /target/badges ]; then
-              cp -r /target/badges/* checkstyle/badges/
+            if [ -d ../target/badges ]; then
+              cp -r ../target/badges/* checkstyle/badges/
             fi
-            
-            # Add, commit, and push
             git add .
             git commit -m "Update documentation: Javadoc and Checkstyle Reports"
             git push origin gh-pages
@@ -88,8 +59,8 @@ jobs:
           path: target/site
           destination: site-reports
       - store_artifacts:
-          path: target/site/checkstyle
-          destination: badge
+          path: target/badges
+          destination: badges
 
 workflows:
   version: 2
