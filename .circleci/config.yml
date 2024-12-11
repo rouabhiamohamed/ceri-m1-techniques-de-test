@@ -40,7 +40,6 @@ jobs:
             echo "Checking for checkstyle-result.xml:"
             find . -name "checkstyle-result.xml"
 
-      # Check if checkstyle-result.xml exists
             if [ -f target/checkstyle-result.xml ]; then
             mvn com.github.bordertech.buildtools:badger:badges \
             -Dbadger.outputDir=target/badges \
