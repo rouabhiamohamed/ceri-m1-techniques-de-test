@@ -26,7 +26,6 @@ jobs:
       - run:
           name: Run Checkstyle
           command: mvn checkstyle:check
-
       - run:
           name: Generate Documentation and Badges
           command: |
@@ -41,12 +40,12 @@ jobs:
             find . -name "checkstyle-result.xml"
 
             if [ -f target/checkstyle-result.xml ]; then
-            mvn com.github.bordertech.buildtools:badger:badges \
-            -Dbadger.outputDir=target/badges \
-            -Dbadger.inputFiles=target/checkstyle-result.xml
+              mvn com.github.bordertech.buildtools:badger:badges \
+                -Dbadger.outputDir=target/badges \
+                -Dbadger.inputFiles=target/checkstyle-result.xml
             else
-            echo "Checkstyle result file not found"
-            exit 1
+              echo "Checkstyle result file not found"
+              exit 1
             fi
 
       - run:

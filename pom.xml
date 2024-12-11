@@ -142,7 +142,6 @@
                     <configLocation>checkstyle.xml</configLocation>
                     <outputFile>${project.build.directory}/checkstyle-result.xml</outputFile>
                     <consoleOutput>true</consoleOutput>
-                    <failsOnError>true</failsOnError>
                 </configuration>
                 <executions>
                     <execution>
@@ -150,11 +149,11 @@
                         <phase>validate</phase>
                         <goals>
                             <goal>check</goal>
-                            <goal>checkstyle</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>com.github.bordertech.buildtools</groupId>
                 <artifactId>badger</artifactId>
