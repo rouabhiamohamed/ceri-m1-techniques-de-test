@@ -1,5 +1,4 @@
 version: 2.1
-
 orbs:
   codecov: codecov/codecov@3.0.0
 
@@ -27,57 +26,45 @@ jobs:
       - run:
           name: Run Checkstyle
           command: mvn checkstyle:check
-
       - run:
-          name: Generate Javadoc
-          command: mvn javadoc:javadoc
-      - run:
-          name: Set Correct Permissions
+          name: Generate Documentation
           command: |
-            chmod -R 755 target/site  # Ensure correct permissions for all files
+            mvn javadoc:javadoc
+            mvn checkstyle:checkstyle
       - run:
-          name: Debug Files Before Publishing
+          name: Prepare GitHub Pages
           command: |
-            echo "Listing all files in target/site/"
-            ls -R target/site/
-            echo "Check for checkstyle.html in the list:"
-            find target/site/ -name "checkstyle.html"  # Specifically check for checkstyle.html
-            echo "Checking if checkstyle.html is ignored by Git"
-            git check-ignore -v target/site/checkstyle.html  
-
-      - run:
-          name: Publish Javadoc and Checkstyle to GitHub Pages
-          command: |
-            # Set up Git user information
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
             
-            git fetch origin gh-pages || echo "Branch does not exist yet, creating a new one."
-            git checkout -B gh-pages
-
-            git rm -rf . || echo "Nothing to clean"
-
-            # Debug: List contents before copying
-            echo "Before copying:"
-            ls -R target/site/
-
-            # Use rsync to copy all files
-            rsync -av --exclude='.git/' target/site/ .
-
-            # Debug: List contents after copying
-            echo "After copying:"
-            ls -R  
-
-            # Add all files, including ignored ones
-            git add -A -f
-            git status  
-
-            git commit -m "Publish Javadoc and site content"
-
-            git push --force https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git gh-pages -f
+            # Clone the entire repository
+            git clone https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git repo
+            
+            # Switch to gh-pages branch, create if not exists
+            cd repo
+            git checkout gh-pages || git checkout -b gh-pages
+            
+            # Remove existing contents
+            git rm -rf . || echo "No existing files to remove"
+            
+            # Copy new documentation
+            mkdir -p apidocs
+            cp -r ../target/site/apidocs/* apidocs/
+            
+            # Copy entire Checkstyle site
+            mkdir -p checkstyle
+            cp -r ../target/site/* checkstyle/
+            
+            # Add, commit, and push
+            git add .
+            git commit -m "Update documentation: Javadoc and Checkstyle Reports"
+            git push origin gh-pages
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
+      - store_artifacts:
+          path: target/site
+          destination: site-reports
 
 workflows:
   version: 2
