@@ -135,44 +135,9 @@
 
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.2.1</version>
-                <configuration>
-                    <configLocation>checkstyle.xml</configLocation>
-                    <outputFile>${project.build.directory}/checkstyle-result.xml</outputFile>
-                    <consoleOutput>true</consoleOutput>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>validate</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
                 <groupId>com.github.bordertech.buildtools</groupId>
                 <artifactId>badger</artifactId>
                 <version>1.0.0</version>
-                <executions>
-                    <execution>
-                        <id>verify</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>badges</goal>
-                        </goals>
-                        <configuration>
-                            <outputDir>${project.build.directory}/badges</outputDir>
-                            <inputFiles>
-                                <inputFile>target/checkstyle-result.xml</inputFile>
-                            </inputFiles>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

@@ -26,11 +26,16 @@ jobs:
       - run:
           name: Run Checkstyle
           command: mvn checkstyle:check
+
       - run:
-          name: Generate Documentation
+          name: Generate Documentation and Badges
           command: |
             mvn javadoc:javadoc
             mvn checkstyle:checkstyle
+            
+            mvn com.github.bordertech.buildtools:badger:badges \
+              -Dbadger.outputDir=target/badges \
+              -Dbadger.inputFiles=target/checkstyle-result.xml
       - run:
           name: Prepare GitHub Pages
           command: |
@@ -50,6 +55,8 @@ jobs:
             # Copy new documentation
             mkdir -p apidocs
             cp -r ../target/site/apidocs/* apidocs/
+           mkdir -p checkstyle/badges
+           cp -r target/badges/* checkstyle/badges/
             
             # Copy entire Checkstyle site
             mkdir -p checkstyle
