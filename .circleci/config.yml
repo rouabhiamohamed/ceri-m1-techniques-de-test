@@ -53,13 +53,14 @@ jobs:
             
             # Copy new documentation
             mkdir -p apidocs
+            # Copy entire Checkstyle site
+            mkdir -p checkstyle
+            cp -r ../target/site/* checkstyle/
             cp -r ../target/site/apidocs/* apidocs/
             mkdir -p checkstyle/badges
             cp -r target/badges/* checkstyle/badges/
             
-            # Copy entire Checkstyle site
-            mkdir -p checkstyle
-            cp -r ../target/site/* checkstyle/
+          
             
             # Add, commit, and push
             git add .
