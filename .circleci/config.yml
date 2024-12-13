@@ -18,7 +18,7 @@ jobs:
           command: |
             mvn clean
             mvn verify
-            mvn  site
+            
             mvn badger:badges
 
       - codecov/upload:
