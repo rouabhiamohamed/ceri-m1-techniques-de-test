@@ -1,3 +1,12 @@
+version: 2.1
+orbs:
+  codecov: codecov/codecov@3.0.0
+
+executors:
+  maven-executor:
+    docker:
+      - image: maven:3.8.6-openjdk-11
+
 jobs:
   build:
     executor: maven-executor
@@ -46,3 +55,22 @@ jobs:
             git add .
             git commit -m "Update documentation: Javadoc and Checkstyle Reports"
             git push origin gh-pages
+      - store_artifacts:
+          path: target/site/apidocs
+          destination: javadoc
+      - store_artifacts:
+          path: target/site
+          destination: site-reports
+      - store_artifacts:
+          path: target/badges
+          destination: badges
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
