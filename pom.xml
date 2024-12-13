@@ -109,22 +109,15 @@
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
                     <outputFile>${project.build.directory}/checkstyle-result.xml</outputFile>
-                    <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
-                    <linkXRef>false</linkXRef>
+                    <consoleOutput>true</consoleOutput>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>validate</id>
+                        <id>checkstyle-check</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>check</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>generate-site</id>
-                        <phase>site</phase>
-                        <goals>
                             <goal>checkstyle</goal>
                         </goals>
                     </execution>
