@@ -49,15 +49,30 @@ jobs:
             cd repo
             git checkout gh-pages || git checkout -b gh-pages
             git rm -rf . || echo "No existing files to remove"
+            
+            # Create directories
             mkdir -p apidocs
             mkdir -p checkstyle
+            mkdir -p checkstyle/badges
+            
+            # Debug: List contents of target directory
+            echo "Contents of target directory:"
+            ls -la ../target
+            
+            # Copy checkstyle report
             cp -r ../target/site/* checkstyle/
             cp -r ../target/site/apidocs/* apidocs/
-            mkdir -p checkstyle/badges
-            if [ -d ../target/badges ]; then
-              cp -r ../target/badges/* checkstyle/badges/
-            fi
+            
+            # Copy badges
+            cp -r ../target/badges/* checkstyle/badges/
+            
+            # Debug: List contents after copying
+            echo "Contents after copying:"
+            ls -la checkstyle/
+            ls -la checkstyle/badges/
+            
             git add .
+            git status  # See what's being committed
             git commit -m "Update documentation: Javadoc and Checkstyle Reports"
             git push origin gh-pages
       - store_artifacts:
