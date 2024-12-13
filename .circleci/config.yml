@@ -47,7 +47,7 @@ jobs:
             mkdir -p apidocs
             mkdir -p checkstyle
             cp -r ../target/site/* checkstyle/
-            cp -r ../target/site/apidocs/* apidocs/
+            cp -r ../target/apidocs/* apidocs/
             mkdir -p checkstyle/badges
             if [ -d ../target/badges ]; then
               cp -r ../target/badges/* checkstyle/badges/
