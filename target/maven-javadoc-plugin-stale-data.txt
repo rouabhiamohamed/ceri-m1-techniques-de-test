@@ -9,14 +9,14 @@
 -source
 '11'
 -sourcepath
-'C:/Users/etudiant/IdeaProjects/ceri-m1-techniques-de-test/src/main/java'
+'C:/Users/etudiant/IdeaProjects/ceri-m1-techniques-de-test/src/main/java;C:/Users/etudiant/IdeaProjects/ceri-m1-techniques-de-test/target/generated-sources/annotations'
 -author
 -bottom
 'Copyright &#169; 2024. All rights reserved.'
 -charset
 'UTF-8'
 -d
-'C:/Users/etudiant/IdeaProjects/ceri-m1-techniques-de-test/target/site/apidocs'
+'C:/Users/etudiant/IdeaProjects/ceri-m1-techniques-de-test/target/apidocs'
 -docencoding
 'UTF-8'
 -doctitle
@@ -45,17 +45,18 @@ fr.univavignon.pokedex.api
 'C:/Users/etudiant/IdeaProjects/ceri-m1-techniques-de-test/src/main/java/fr/univavignon/pokedex/api/Team.java'
 C:\Users\etudiant\.m2\repository\org\apache\commons\commons-collections4\4.0\commons-collections4-4.0.jar = 1734126327628
 C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\src\main\java = 1733787567460
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\allclasses-index.html = 1734127225262
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\allpackages-index.html = 1734127225285
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\element-list = 1734127224649
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\help-doc.html = 1734127225573
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\index-all.html = 1734127225493
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\index.html = 1734127225553
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\member-search-index.js = 1734127225336
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\module-search-index.js = 1734127225300
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\overview-tree.html = 1734127225216
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\package-search-index.js = 1734127225311
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\search.html = 1734127225540
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\serialized-form.html = 1734127224804
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\tag-search-index.js = 1734127225351
-C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\site\apidocs\type-search-index.js = 1734127225323
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\generated-sources\annotations = 1734128448613
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\allclasses-index.html = 1734128595285
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\allpackages-index.html = 1734128595298
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\element-list = 1734128595005
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\help-doc.html = 1734128595393
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\index-all.html = 1734128595357
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\index.html = 1734128595380
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\member-search-index.js = 1734128595328
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\module-search-index.js = 1734128595307
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\overview-tree.html = 1734128595259
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\package-search-index.js = 1734128595314
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\search.html = 1734128595371
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\serialized-form.html = 1734128595052
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\tag-search-index.js = 1734128595336
+C:\Users\etudiant\IdeaProjects\ceri-m1-techniques-de-test\target\apidocs\type-search-index.js = 1734128595321
