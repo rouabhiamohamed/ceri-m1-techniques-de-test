@@ -139,7 +139,7 @@
                 <executions>
                     <execution>
                         <id>generate-badges</id>
-                        <phase>validate</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>badges</goal>
                         </goals>
@@ -152,7 +152,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
 </project>
