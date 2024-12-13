@@ -1,12 +1,3 @@
-version: 2.1
-orbs:
-  codecov: codecov/codecov@3.0.0
-
-executors:
-  maven-executor:
-    docker:
-      - image: maven:3.8.6-openjdk-11
-
 jobs:
   build:
     executor: maven-executor
@@ -24,17 +15,17 @@ jobs:
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
       - run:
-          name: Run Checkstyle
-          command: mvn checkstyle:check
-      - run:
-          name: Run Checkstyle
+          name: Run Checkstyle and Generate Reports
           command: |
             mvn checkstyle:check
             mvn checkstyle:checkstyle
       - run:
-                name: Generate Badges
-                command: |
-                  mvn com.github.bordertech.buildtools:badger:badges -Dbadger.outputDir=target/badges -Dbadger.inputFiles=target/checkstyle-result.xml
+          name: Generate Badges
+          command: |
+            mvn com.github.bordertech.buildtools:badger:badges -Dbadger.outputDir=target/badges -Dbadger.inputFiles=target/checkstyle-result.xml
+      - run:
+          name: Generate Javadoc
+          command: mvn javadoc:javadoc
       - run:
           name: Prepare GitHub Pages
           command: |
@@ -47,7 +38,7 @@ jobs:
             mkdir -p apidocs
             mkdir -p checkstyle
             cp -r ../target/site/* checkstyle/
-            cp -r ../target/apidocs/* apidocs/
+            cp -r ../target/site/apidocs/* apidocs/
             mkdir -p checkstyle/badges
             if [ -d ../target/badges ]; then
               cp -r ../target/badges/* checkstyle/badges/
@@ -55,22 +46,3 @@ jobs:
             git add .
             git commit -m "Update documentation: Javadoc and Checkstyle Reports"
             git push origin gh-pages
-      - store_artifacts:
-          path: target/site/apidocs
-          destination: javadoc
-      - store_artifacts:
-          path: target/site
-          destination: site-reports
-      - store_artifacts:
-          path: target/badges
-          destination: badges
-
-workflows:
-  version: 2
-  build-and-test:
-    jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - master
