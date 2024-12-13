@@ -34,8 +34,7 @@ jobs:
             echo "Checking for checkstyle result..."
             ls -la target/
             echo "Generating badges..."
-            mvn com.github.bordertech.buildtools:badger:badges -Dbadger.outputDir=target/badges -Dbadger.inputFiles=target/checkstyle-result.xml
-            echo "Verifying badge generation..."
+            mvn badger:badges            echo "Verifying badge generation..."
             ls -la target/badges/
       - run:
           name: Generate Javadoc
