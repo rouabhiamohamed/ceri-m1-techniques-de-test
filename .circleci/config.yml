@@ -15,30 +15,30 @@ jobs:
       - run:
           name: Clean Workspace
           command: mvn clean
+
       - run:
           name: Run Tests
           command: mvn test
+
       - run:
           name: Generate JaCoCo Report
           command: mvn jacoco:report
+
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
-      - run:
-          name: Run Checkstyle and Generate Reports
-          command: |
-           mvn site
-           mvn checkstyle:check
-           mvn checkstyle:checkstyle
-           mvn badger:badges
 
       - run:
-          name: Generate Documentation
-          command: mvn javadoc:javadoc
+          name: Run Reports Generation
+          command: |
+            # Generate all reports in one go
+            mvn clean
+            mvn site
+            mvn checkstyle:check checkstyle:checkstyle
+            mvn badger:badges
 
       - run:
           name: Prepare GitHub Pages
           command: |
-            # Configure Git
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
 
@@ -46,35 +46,28 @@ jobs:
             git clone https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git repo
             cd repo
             git checkout gh-pages || git checkout -b gh-pages
+            
+            # Clean existing files
             git rm -rf . || echo "No existing files to remove"
             
-            # Create directories
+            # Create directories and copy files
             mkdir -p apidocs
             mkdir -p checkstyle/badges
             
-            # Copy reports and documentation
+            # Copy all reports together
             cp -r ../target/site/* checkstyle/
             cp -r ../target/site/apidocs/* apidocs/
+            cp -r ../target/badges/* checkstyle/badges/
             
-            # Copy badges if they exist
-            if [ -d "../target/badges" ]; then
-              cp -r ../target/badges/* checkstyle/badges/
-            fi
-            
-            # Show what we're about to commit
-            echo "Files to be committed:"
-            git status
-            
-            # Commit and push
+            # Single commit for all updates
             git add .
-            git commit -m "Update documentation: Javadoc and Checkstyle Reports [skip ci]"
+            git commit -m "Update documentation and reports"
             git push origin gh-pages
-      - store_artifacts:
-          path: target/site/apidocs
-          destination: javadoc
+
       - store_artifacts:
           path: target/site
-          destination: site-reports
+          destination: reports
+
       - store_artifacts:
           path: target/badges
           destination: badges
