@@ -28,53 +28,40 @@ jobs:
           command: |
             mvn checkstyle:check
             mvn checkstyle:checkstyle
-      - run:
-          name: Generate Badges
-          command: |
-            echo "Checking for checkstyle result..."
-            ls -la target/
-            echo "Generating badges..."
-            mvn badger:badges          
-            echo "Verifying badge generation..."
-            ls -la target/badges/
-      - run:
-          name: Generate Javadoc
-          command: mvn javadoc:javadoc
-      - run:
-          name: Prepare GitHub Pages
-          command: |
-            git config --global user.email "ci@circleci.com"
-            git config --global user.name "CircleCI"
-            git clone https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git repo
-            cd repo
-            git checkout gh-pages || git checkout -b gh-pages
-            git rm -rf . || echo "No existing files to remove"
-            
-            # Create directories
-            mkdir -p apidocs
-            mkdir -p checkstyle
-            mkdir -p checkstyle/badges
-            
-            # Debug: List contents of target directory
-            echo "Contents of target directory:"
-            ls -la ../target
-            
-            # Copy checkstyle report
-            cp -r ../target/site/* checkstyle/
-            cp -r ../target/site/apidocs/* apidocs/
-            
-            # Copy badges
-            cp -r ../target/badges/* checkstyle/badges/
-            
-            # Debug: List contents after copying
-            echo "Contents after copying:"
-            ls -la checkstyle/
-            ls -la checkstyle/badges/
-            
-            git add .
-            git status  # See what's being committed
-            git commit -m "Update documentation: Javadoc and Checkstyle Reports"
-            git push origin gh-pages
+            mvn site
+            mvn badger:badges
+
+            - run:
+                name: Generate Documentation
+                command: mvn javadoc:javadoc
+
+            - run:
+                name: Prepare GitHub Pages
+                command: |
+                  git config --global user.email "ci@circleci.com"
+                  git config --global user.name "CircleCI"
+                  git clone https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git repo
+                  cd repo
+                  git checkout gh-pages || git checkout -b gh-pages
+                  git rm -rf . || echo "No existing files to remove"
+                  
+                  # Create directories
+                  mkdir -p apidocs
+                  mkdir -p checkstyle/badges
+                  
+                  # Copy all reports
+                  cp -r ../target/site/* checkstyle/
+                  cp -r ../target/site/apidocs/* apidocs/
+                  cp -r ../target/badges/* checkstyle/badges/
+                  
+                  # Debug files
+                  echo "Contents of directories:"
+                  ls -R
+                  
+                  # Commit and push
+                  git add .
+                  git commit -m "Update documentation: Javadoc and Checkstyle Reports [skip ci]"
+                  git push origin gh-pages
       - store_artifacts:
           path: target/site/apidocs
           destination: javadoc
