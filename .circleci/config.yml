@@ -12,30 +12,17 @@ jobs:
     executor: maven-executor
     steps:
       - checkout
-      - run:
-          name: Clean Workspace
-          command: mvn clean
 
       - run:
-          name: Run Tests
-          command: mvn test
-
-      - run:
-          name: Generate JaCoCo Report
-          command: mvn jacoco:report
+          name: Generate All Reports
+          command: |
+            mvn clean
+            mvn verify site
+            mvn checkstyle:checkstyle
+            mvn badger:badges
 
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
-
-      - run:
-          name: Run Reports Generation
-          command: |
-            # Generate all reports in one go
-            mvn clean
-            mvn site
-            mvn checkstyle:check checkstyle:checkstyle
-            mvn javadoc:javadoc
-            mvn badger:badges
 
       - run:
           name: Prepare GitHub Pages
@@ -51,30 +38,48 @@ jobs:
             # Clean existing files
             git rm -rf . || echo "No existing files to remove"
             
-            # Create directories and copy files
+            # Create directories
             mkdir -p apidocs
             mkdir -p checkstyle/badges
             
-            # Debug: List contents of target directory
-            echo "Contents of target directory:"
-            ls -la ../target
-            echo "Contents of target/site:"
-            ls -la ../target/site
+            # Verify files exist before copying
+            if [ -d "../target/site" ]; then
+              cp -r ../target/site/* checkstyle/ || echo "Failed to copy site files"
+            else
+              echo "Site directory not found"
+              exit 1
+            fi
+
+            if [ -d "../target/site/apidocs" ]; then
+              cp -r ../target/site/apidocs/* apidocs/ || echo "Failed to copy apidocs"
+            else
+              echo "Apidocs not found"
+              exit 1
+            fi
+
+            if [ -d "../target/badges" ]; then
+              cp -r ../target/badges/* checkstyle/badges/ || echo "Failed to copy badges"
+            else
+              echo "Badges not found"
+              exit 1
+            fi
             
-            # Copy all reports together
-            cp -r ../target/site/* checkstyle/
-            cp -r ../target/site/apidocs/* apidocs/
-            cp -r ../target/badges/* checkstyle/badges/
+            # Show what will be committed
+            echo "Files to be committed:"
+            git status
             
-            # Single commit for all updates
+            # Commit and push if there are changes
             git add .
-            git commit -m "Update documentation and reports"
-            git push origin gh-pages
+            if git diff-index --quiet HEAD --; then
+              echo "No changes to commit"
+            else
+              git commit -m "Update documentation and reports"
+              git push origin gh-pages
+            fi
 
       - store_artifacts:
           path: target/site
           destination: reports
-
       - store_artifacts:
           path: target/badges
           destination: badges
