@@ -27,11 +27,16 @@ jobs:
           name: Run Checkstyle
           command: mvn checkstyle:check
       - run:
-          name: Generate Badges
+          name: Run Checkstyle
           command: |
-            mvn com.github.bordertech.buildtools:badger:badges \
-              -Dbadger.outputDir=target/badges \
-              -Dbadger.inputFiles=target/checkstyle-result.xml
+            mvn checkstyle:check
+            mvn checkstyle:checkstyle  # Add this line to generate the XML report
+            - run:
+                name: Generate Badges
+                command: |
+                  mvn com.github.bordertech.buildtools:badger:badges \
+                    -Dbadger.outputDir=target/badges \
+                    -Dbadger.inputFiles=target/checkstyle-result.xml
       - run:
           name: Prepare GitHub Pages
           command: |

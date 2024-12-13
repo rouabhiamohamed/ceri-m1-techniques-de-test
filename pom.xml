@@ -138,12 +138,16 @@
                 <version>1.0.0</version>
                 <executions>
                     <execution>
+                        <id>generate-badges</id>
+                        <phase>validate</phase>
                         <goals>
                             <goal>badges</goal>
                         </goals>
                         <configuration>
                             <outputDir>${project.build.directory}/badges</outputDir>
-                            <inputFiles>${project.build.directory}/checkstyle-result.xml</inputFiles>
+                            <inputFiles>
+                                <inputFile>${project.build.directory}/checkstyle-result.xml</inputFile>
+                            </inputFiles>
                         </configuration>
                     </execution>
                 </executions>
