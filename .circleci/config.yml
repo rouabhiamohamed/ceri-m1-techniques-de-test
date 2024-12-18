@@ -18,6 +18,7 @@ jobs:
           command: |
             mvn clean 
             mvn  site
+            mvn verify
            
 
       - codecov/upload:
@@ -83,6 +84,9 @@ jobs:
       - store_artifacts:
           path: target/badges
           destination: badges
+      - store_artifacts:
+        path: target/checkstyle-result.xml
+        destination: checkstyle-result.xml
 
 workflows:
   version: 2

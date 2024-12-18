@@ -8,7 +8,7 @@
 ## Badges
 [![CircleCI](https://circleci.com/gh/rouabhiamohamed/ceri-m1-techniques-de-test.svg?style=shield)](https://circleci.com/gh/rouabhiamohamed/ceri-m1-techniques-de-test)
 [![codecov](https://codecov.io/gh/rouabhiamohamed/ceri-m1-techniques-de-test/graph/badge.svg?token=WSX5HZDM4U)](https://codecov.io/gh/rouabhiamohamed/ceri-m1-techniques-de-test)
-[![Checkstyle](https://rouabhiamohamed.github.io/ceri-m1-techniques-de-test/checkstyle/badges/checkstyle-badge.svg)](https://rouabhiamohamed.github.io/ceri-m1-techniques-de-test/checkstyle/checkstyle.html)
+[![Checkstyle](https://rouabhiamohamed.github.io/ceri-m1-techniques-de-test/checkstyle/badges/checkstyle-result.svg)](https://rouabhiamohamed.github.io/ceri-m1-techniques-de-test/checkstyle/checkstyle.html)
 [![Javadoc](https://img.shields.io/badge/Javadoc-Link-blue)](https://rouabhiamohamed.github.io/ceri-m1-techniques-de-test/apidocs)
 ## Documentation
 
