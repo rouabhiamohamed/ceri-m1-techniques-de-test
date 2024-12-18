@@ -6,7 +6,6 @@ executors:
   maven-executor:
     docker:
       - image: maven:3.8.6-openjdk-11
-
 jobs:
   build:
     executor: maven-executor
@@ -81,7 +80,7 @@ jobs:
           path: target/site
           destination: reports
       - store_artifacts:
-          path: target/badges
+          path: target/site/badges
           destination: badges
       - store_artifacts:
           path: target/checkstyle-result.xml
