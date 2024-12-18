@@ -81,7 +81,7 @@ jobs:
           path: target/site
           destination: reports
       - store_artifacts:
-          path: target/site/badges
+          path: target/badges
           destination: badges
       - store_artifacts:
           path: target/checkstyle-result.xml
