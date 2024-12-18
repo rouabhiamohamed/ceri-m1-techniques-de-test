@@ -6,11 +6,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PokemonFactoryTest {
 
-	private PokemonFactory pokemonFactory;
+	private RocketPokemonFactory pokemonFactory;
 
 	@BeforeEach
 	void setUp() {
-		pokemonFactory = new PokemonFactory();
+		pokemonFactory = new RocketPokemonFactory();
 	}
 
 	@Test
