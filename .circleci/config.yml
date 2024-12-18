@@ -21,7 +21,7 @@ jobs:
             mvn checkstyle:checkstyle
             mvn badger:badges  
             mvn checkstyle:check
-
+            mvn jacoco:report
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
 
