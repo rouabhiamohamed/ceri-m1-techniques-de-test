@@ -20,7 +20,7 @@ jobs:
             mvn checkstyle:checkstyle
             mvn badger:badges
             mvn javadoc:javadoc
-            mvn jacoco:report
+            mvn jacoco:check
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
 
