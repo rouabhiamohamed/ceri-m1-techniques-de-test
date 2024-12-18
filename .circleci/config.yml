@@ -18,7 +18,6 @@ jobs:
           command: |
             mvn clean 
             mvn verify 
-            mvn site
 
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
