@@ -147,7 +147,7 @@
                         <id>create-badges</id>
                         <phase>site</phase>
                         <goals>
-                            <goal>badge</goal>
+                            <goal>badges</goal>
                         </goals>
                     </execution>
                 </executions>
