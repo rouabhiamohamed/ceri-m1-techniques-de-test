@@ -18,8 +18,10 @@ jobs:
           command: |
             mvn clean
             mvn checkstyle:checkstyle
-            mvn badger:badges
+            
             mvn site
+            mvn validate
+            mvn badger:badges
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
 
