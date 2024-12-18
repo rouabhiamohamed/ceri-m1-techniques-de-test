@@ -149,14 +149,14 @@
                         <goals>
                             <goal>badges</goal>
                         </goals>
+                        <configuration>
+                            <outputDir>${project.reporting.outputDirectory}/badges</outputDir>
+                            <inputFiles>
+                                <inputFile>${project.build.directory}/checkstyle-result.xml</inputFile>
+                            </inputFiles>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <outputDir>${project.build.directory}/badges</outputDir>
-                    <inputFiles>
-                        <inputFile>${project.build.directory}/checkstyle-result.xml</inputFile>
-                    </inputFiles>
-                </configuration>
             </plugin>
 
             <plugin>
