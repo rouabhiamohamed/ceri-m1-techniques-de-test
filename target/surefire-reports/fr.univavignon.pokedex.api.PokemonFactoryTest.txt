@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: fr.univavignon.pokedex.api.PokemonFactoryTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.043 s <<< FAILURE! - in fr.univavignon.pokedex.api.PokemonFactoryTest
+fr.univavignon.pokedex.api.PokemonFactoryTest.testIVConsistency  Time elapsed: 0.014 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: not equal but was: <60>
+	at fr.univavignon.pokedex.api.PokemonFactoryTest.testIVConsistency(PokemonFactoryTest.java:65)
+
