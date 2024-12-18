@@ -1,4 +1,5 @@
 version: 2.1
+
 orbs:
   codecov: codecov/codecov@3.0.0
 
@@ -6,6 +7,8 @@ executors:
   maven-executor:
     docker:
       - image: maven:3.8.6-openjdk-11
+        environment:
+          MAVEN_OPTS: -Xmx3200m
 
 jobs:
   build:
@@ -13,16 +16,55 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Generate All Reports
-          command: |
-            mvn clean
-            mvn checkstyle:checkstyle
-          
-            mvn site
-            mvn checkstyle:check
+      # Cache Maven dependencies
+      - restore_cache:
+          keys:
+            - maven-deps-v1-{{ checksum "pom.xml" }}
+            - maven-deps-v1-
 
+      - run:
+          name: Download Dependencies
+          command: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: maven-deps-v1-{{ checksum "pom.xml" }}
+
+      - run:
+          name: Compile and Run Tests
+          command: |
+            mvn clean compile test
+
+      - run:
+          name: Generate Reports
+          command: |
+            # Run verify to generate JaCoCo report
+            mvn verify -DskipTests
+            
+            # Generate checkstyle report
+            mvn checkstyle:checkstyle
+            
+            # Generate site with all reports
+            mvn site
+            
+            # Verify reports exist
+            echo "Checking for JaCoCo report..."
+            if [ ! -f "target/site/jacoco/jacoco.xml" ]; then
+              echo "Error: JaCoCo report not generated!"
+              exit 1
+            fi
+            
+            echo "Checking for Checkstyle report..."
+            if [ ! -f "target/checkstyle-result.xml" ]; then
+              echo "Error: Checkstyle report not generated!"
+              exit 1
+            fi
+            
+            # Generate badges if reports exist
+            echo "Generating badges..."
             mvn badger:badges
+
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
 
@@ -31,57 +73,62 @@ jobs:
           command: |
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
-
-            # Clone and prepare gh-pages branch
+            
+            echo "Cloning repository..."
             git clone https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git repo
             cd repo
+            
+            echo "Checking out gh-pages branch..."
             git checkout gh-pages || git checkout -b gh-pages
             
-            # Clean existing files
+            echo "Cleaning existing files..."
             git rm -rf . || echo "No existing files to remove"
             
-            # Create directories
+            echo "Creating directories..."
             mkdir -p apidocs
             mkdir -p checkstyle/badges
             
-            # Verify files exist before copying
+            echo "Copying new files..."
+            # Copy site files
             if [ -d "../target/site" ]; then
-              cp -r ../target/site/* checkstyle/ || echo "Failed to copy site files"
+              cp -r ../target/site/* checkstyle/ || echo "Warning: Failed to copy site files"
             else
-              echo "Site directory not found"
+              echo "Error: Site directory not found"
               exit 1
             fi
-
+            
+            # Copy API docs
             if [ -d "../target/site/apidocs" ]; then
-              cp -r ../target/site/apidocs/* apidocs/ || echo "Failed to copy apidocs"
+              cp -r ../target/site/apidocs/* apidocs/ || echo "Warning: Failed to copy apidocs"
             else
-              echo "Apidocs not found"
+              echo "Error: Apidocs not found"
               exit 1
             fi
-
+            
+            # Copy badges
             if [ -d "../target/badges" ]; then
-              cp -r ../target/badges/* checkstyle/badges/ || echo "Failed to copy badges"
+              cp -r ../target/badges/* checkstyle/badges/ || echo "Warning: Failed to copy badges"
             else
-              echo "Badges not found"
+              echo "Error: Badges not found"
               exit 1
             fi
             
-            # Show what will be committed
-            echo "Files to be committed:"
-            git status
-            
-            # Commit and push if there are changes
+            echo "Committing changes..."
             git add .
             if git diff-index --quiet HEAD --; then
               echo "No changes to commit"
             else
-              git commit -m "Update documentation and reports"
+              git commit -m "Update documentation and reports [skip ci]"
               git push origin gh-pages
             fi
+
+      - store_test_results:
+          path: target/surefire-reports
 
       - store_artifacts:
           path: target/site
           destination: reports
+
       - store_artifacts:
           path: target/badges
           destination: badges
