@@ -18,7 +18,8 @@ jobs:
           command: |
             mvn clean 
             mvn site
-
+            mvn verify
+            mvn badger:badges
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
 
@@ -54,8 +55,7 @@ jobs:
               echo "Apidocs not found"
               exit 1
             fi
-           mvn verify
-           mvn badger:badges
+           
             if [ -d "../target/badges" ]; then
               cp -r ../target/badges/* checkstyle/badges/ || echo "Failed to copy badges"
             else
