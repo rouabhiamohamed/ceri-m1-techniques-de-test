@@ -17,7 +17,7 @@ jobs:
           name: Generate All Reports
           command: |
             mvn clean
-            
+            mvn javadoc:javadoc
             mvn checkstyle:checkstyle
             mvn checkstyle:check
             mvn badger:badges
