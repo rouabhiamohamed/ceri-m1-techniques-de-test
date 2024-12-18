@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"fr.univavignon.pokedex.api","l":"AbstractPokedexTest"},{"l":"All Classes","url":"allclasses-index.html"},{"p":"fr.univavignon.pokedex.api","l":"PokedexTest"},{"p":"fr.univavignon.pokedex.api","l":"PokemonTrainerFactoryTest"}]
