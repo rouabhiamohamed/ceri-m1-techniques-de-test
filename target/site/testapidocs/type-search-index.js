@@ -1,1 +1,0 @@
-typeSearchIndex = [{"p":"fr.univavignon.pokedex.api","l":"AbstractPokedexTest"},{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"fr.univavignon.pokedex.api","l":"PokedexTest"},{"p":"fr.univavignon.pokedex.api","l":"PokemonTrainerFactoryTest"}];updateSearchResults();
