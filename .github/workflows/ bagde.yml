@@ -20,9 +20,6 @@ jobs:
       - name: Run Maven verify
         run: mvn verify
 
-      - name: Create badges directory
-        run: mkdir -p .github/badges
-
       - name: Generate badge
         run: |
           ERRORS=$(grep -c "<error" target/checkstyle-result.xml || true)
@@ -33,12 +30,24 @@ jobs:
             COLOR=red
             STATUS="$ERRORS issues"
           fi
-          curl -o .github/badges/checkstyle-badge.svg "https://img.shields.io/badge/checkstyle-$STATUS-$COLOR"
+          # Store badge content in a variable
+          BADGE_CONTENT=$(curl "https://img.shields.io/badge/checkstyle-$STATUS-$COLOR")
 
-      - name: Commit badge
+      - name: Checkout gh-pages
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          clean: true
+
+      - name: Create badges directory and save badge
+        run: |
+          mkdir -p checkstyle/badges
+          echo "$BADGE_CONTENT" > checkstyle/badges/checkstyle-badge.svg
+
+      - name: Commit and push to gh-pages
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add .github/badges/checkstyle-badge.svg
+          git add checkstyle/badges/checkstyle-badge.svg
           git commit -m "Update checkstyle badge" || true
           git push
