@@ -17,8 +17,8 @@ jobs:
           name: Generate All Reports
           command: |
             mvn clean 
-            mvn site
-            mvn verify 
+            mvn verify site
+           
 
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
