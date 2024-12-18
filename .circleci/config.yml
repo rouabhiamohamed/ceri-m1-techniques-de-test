@@ -18,6 +18,7 @@ jobs:
           command: |
             mvn clean 
             mvn site
+            mvn verify
             mvn badger:badges
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml

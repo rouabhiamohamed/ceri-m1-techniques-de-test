@@ -114,23 +114,30 @@
                 <version>3.2.1</version>
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
-                    <outputFile>${project.build.directory}/checkstyle-result.xml</outputFile>
-                    <outputFileFormat>xml</outputFileFormat>
                     <failsOnError>true</failsOnError>
                     <consoleOutput>true</consoleOutput>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>generate-checkstyle-result</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>${project.build.directory}/checkstyle-result.xml</outputFile>
+                            <outputFileFormat>xml</outputFileFormat>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>checkstyle-check</id>
-                        <phase>site</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>check</goal>
-                            <goal>checkstyle</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>com.github.bordertech.buildtools</groupId>
                 <artifactId>badger</artifactId>
