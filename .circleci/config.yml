@@ -17,11 +17,9 @@ jobs:
           name: Generate All Reports
           command: |
             mvn clean
+            mvn:checkstyle:checkstyle
+            mvn badger:badges
             mvn site
-            mvn checkstyle:checkstyle
-            mvn badger:badges  
-            mvn checkstyle:check
-            mvn jacoco:report
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
 
