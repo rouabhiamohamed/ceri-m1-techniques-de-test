@@ -16,7 +16,6 @@ jobs:
     steps:
       - checkout
 
-      # Cache Maven dependencies
       - restore_cache:
           keys:
             - maven-deps-v1-{{ checksum "pom.xml" }}
@@ -73,48 +72,44 @@ jobs:
           command: |
             git config --global user.email "ci@circleci.com"
             git config --global user.name "CircleCI"
-            
+
             echo "Cloning repository..."
             git clone https://$GH_TOKEN@github.com/rouabhiamohamed/ceri-m1-techniques-de-test.git repo
             cd repo
-            
+
             echo "Checking out gh-pages branch..."
             git checkout gh-pages || git checkout -b gh-pages
-            
+
             echo "Cleaning existing files..."
-            git rm -rf . || echo "No existing files to remove"
-            
+            # Don't remove everything, just update what's needed
+            rm -rf checkstyle/* apidocs/* || echo "No files to remove"
+
             echo "Creating directories..."
             mkdir -p apidocs
             mkdir -p checkstyle/badges
-            
+
             echo "Copying new files..."
-            # Copy site files
+            # Copy site files including badges
             if [ -d "../target/site" ]; then
               cp -r ../target/site/* checkstyle/ || echo "Warning: Failed to copy site files"
+
+              # Explicitly preserve badges
+              if [ -d "../target/site/badges" ]; then
+                cp -r ../target/site/badges/* checkstyle/badges/ || echo "Warning: Failed to copy badges"
+              fi
             else
               echo "Error: Site directory not found"
               exit 1
             fi
-            
-            # Copy API docs
-            if [ -d "../target/site/apidocs" ]; then
-              cp -r ../target/site/apidocs/* apidocs/ || echo "Warning: Failed to copy apidocs"
-            else
-              echo "Error: Apidocs not found"
-              exit 1
-            fi
-            
-            # Copy badges
-            if [ -d "../target/badges" ]; then
-              cp -r ../target/badges/* checkstyle/badges/ || echo "Warning: Failed to copy badges"
-            else
-              echo "Error: Badges not found"
-              exit 1
-            fi
-            
+
+            # List all files before commit
+            echo "Files to be committed:"
+            ls -la
+            ls -la checkstyle/badges || echo "No badges directory"
+
             echo "Committing changes..."
-            git add .
+            git add -A
+            git status
             if git diff-index --quiet HEAD --; then
               echo "No changes to commit"
             else
