@@ -17,7 +17,7 @@ jobs:
           name: Generate All Reports
           command: |
             mvn clean
-            mvn:checkstyle:checkstyle
+            mvn checkstyle:checkstyle
             mvn badger:badges
             mvn site
       - codecov/upload:
