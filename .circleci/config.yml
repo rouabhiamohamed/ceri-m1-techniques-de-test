@@ -22,26 +22,7 @@ jobs:
 
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
-          name: Checkstyle Badge
-          on: [ push ]
-          jobs:
-            build:
-              runs-on: ubuntu-latest
-              steps:
-                - uses: actions/checkout@v2
-                - name: Run Maven verify
-                  run: mvn verify
-                - name: Generate badge
-                  run: |
-                    ERRORS=$(grep -c "<error" target/checkstyle-result.xml || true)
-                    if [ "$ERRORS" = "0" ]; then
-                      COLOR=green
-                      STATUS=passing
-                    else
-                      COLOR=red
-                      STATUS="$ERRORS issues"
-                    fi
-                    curl -o checkstyle-badge.svg "https://img.shields.io/badge/checkstyle-$STATUS-$COLOR"
+
 
       - run:
           name: Prepare GitHub Pages
