@@ -18,14 +18,12 @@ class RocketPokemonFactoryTest {
 
     @Test
     void testMISSINGNO() {
-        // Vérifie que les Pokémon inconnus retournent MISSINGNO
         Pokemon pokemon = rocketFactory.createPokemon(999, 100, 100, 100, 100);
         assertEquals("MISSINGNO", pokemon.getName());
     }
 
     @Test
     void testAshPikachu() {
-        // Vérifie le cas spécial de l'index négatif (Ash's Pikachu)
         Pokemon pokemon = rocketFactory.createPokemon(-1, 100, 100, 100, 100);
         assertEquals("Ash's Pikachu", pokemon.getName());
         assertEquals(1000, pokemon.getAttack());
@@ -36,18 +34,15 @@ class RocketPokemonFactoryTest {
 
     @Test
     void testBulbasaurName() {
-        // Vérifie que le nom est bien en anglais
         Pokemon pokemon = rocketFactory.createPokemon(1, 100, 100, 100, 100);
         assertEquals("Bulbasaur", pokemon.getName());
     }
 
     @Test
     void testGenerateRandomStat() {
-        // Vérifie que les stats générées sont cohérentes
         Pokemon pokemon = rocketFactory.createPokemon(1, 100, 100, 100, 100);
         assertTrue(pokemon.getIv() == 1.0, "IV devrait être exactement 1.0");
 
-        // Les stats devraient être autour de 100 (1000000 itérations / 10000)
         int attack = pokemon.getAttack();
         int defense = pokemon.getDefense();
         int stamina = pokemon.getStamina();
