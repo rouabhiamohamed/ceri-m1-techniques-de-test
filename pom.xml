@@ -82,6 +82,10 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/site/jacoco/jacoco.xml</outputDirectory>
+
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
