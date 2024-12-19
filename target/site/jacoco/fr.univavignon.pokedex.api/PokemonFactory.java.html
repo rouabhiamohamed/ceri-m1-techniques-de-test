@@ -21,53 +21,62 @@ import java.util.Random;
    * &lt;strong&gt;Note :&lt;/strong&gt; Cette map est déclarée comme constante avec `final` pour
    * garantir qu'elle ne sera jamais remplacée après son initialisation.
    */
-<span class="fc" id="L24">  private static final Map&lt;Integer, String&gt; POKEMON_NAMES = new HashMap&lt;&gt;() {{</span>
-<span class="fc" id="L25">   put(0, &quot;Bulbizarre&quot;);</span>
-<span class="fc" id="L26">    put(1, &quot;Herbizarre&quot;);</span>
-<span class="fc" id="L27">   put(2, &quot;Florizarre&quot;);</span>
-<span class="fc" id="L28">   put(3, &quot;Salamèche&quot;);</span>
-<span class="fc" id="L29">   put(4, &quot;Reptincel&quot;);</span>
-<span class="fc" id="L30">   put(5, &quot;Dracaufeu&quot;);</span>
-<span class="fc" id="L31">   put(6, &quot;Carapuce&quot;);</span>
-<span class="fc" id="L32">   put(7, &quot;Carabaffe&quot;);</span>
-<span class="fc" id="L33">   put(8, &quot;Tortank&quot;);</span>
-<span class="fc" id="L34">   put(133, &quot;Aquali&quot;);</span>
-   }};
+
+  /**
+   * Une map constante associant les indices des Pokémon à leurs noms respectifs.
+   */
+<span class="fc" id="L28">  private static final Map&lt;Integer, String&gt; POKEMON_NAMES = new HashMap&lt;&gt;() {{</span>
+<span class="fc" id="L29">   put(0, &quot;Bulbizarre&quot;);</span>
+<span class="fc" id="L30">   put(1, &quot;Herbizarre&quot;);</span>
+<span class="fc" id="L31">   put(2, &quot;Florizarre&quot;);</span>
+<span class="fc" id="L32">   put(3, &quot;Salamèche&quot;);</span>
+<span class="fc" id="L33">   put(4, &quot;Reptincel&quot;);</span>
+<span class="fc" id="L34">   put(5, &quot;Dracaufeu&quot;);</span>
+<span class="fc" id="L35">   put(6, &quot;Carapuce&quot;);</span>
+<span class="fc" id="L36">   put(7, &quot;Carabaffe&quot;);</span>
+<span class="fc" id="L37">   put(8, &quot;Tortank&quot;);</span>
+<span class="fc" id="L38">   put(133, &quot;Aquali&quot;);</span>
+  }};
+
+  // Add this line - create a single Random instance
+<span class="fc" id="L42">  private final Random random = new Random();</span>
+
   /**
    *
    * @return Un tableau de 3 valeurs (attaque, défense, stamina)
    */
-   private int[] generateIVs() {
-<span class="fc" id="L41">   Random random = new Random();</span>
-<span class="fc" id="L42">   int attack = random.nextInt(16);     // IV entre 0 et 15</span>
-<span class="fc" id="L43">   int defense = random.nextInt(16);    // IV entre 0 et 15</span>
-<span class="fc" id="L44">   int stamina = random.nextInt(16);    // IV entre 0 et 15</span>
-<span class="fc" id="L45">   return new int[]{attack, defense, stamina};</span>
+  private int[] generateIVs() {
+   // Remove this line - don't create new Random instance each time
+   // Random random = new Random();
+<span class="fc" id="L51">   int attack = random.nextInt(16);     // IV entre 0 et 15</span>
+<span class="fc" id="L52">   int defense = random.nextInt(16);    // IV entre 0 et 15</span>
+<span class="fc" id="L53">   int stamina = random.nextInt(16);    // IV entre 0 et 15</span>
+<span class="fc" id="L54">   return new int[]{attack, defense, stamina};</span>
   }
-   /**
-    * @param ivs Tableau des IV
+  /**
+   * @param ivs Tableau des IV
    * @return Valeur IV calculée
-    */
-   private double calculateTotalIV(int[] ivs) {
-<span class="fc" id="L52">    return ((ivs[0] + ivs[1] + ivs[2]) / 45.0) * 100;</span>
-   }
-   @Override
-   public Pokemon createPokemon(int index, int cp, int hp, int dust, int candy) {
-<span class="fc" id="L56">    String name = POKEMON_NAMES.getOrDefault(index, &quot;Inconnu&quot;);</span>
-<span class="fc" id="L57">    int[] ivs = generateIVs();</span>
-<span class="fc" id="L58">    double iv = calculateTotalIV(ivs);</span>
-<span class="fc" id="L59">   return new Pokemon(</span>
-    index,
-    name,
-    ivs[0] * 15,
-    ivs[1] * 15,
-    ivs[2] * 15,
-    cp,
-    hp,
-    dust,
-     candy,
-     iv
-     );
-   }
-}
+   */
+  private double calculateTotalIV(int[] ivs) {
+<span class="fc" id="L61">   return ((ivs[0] + ivs[1] + ivs[2]) / 45.0) * 100;</span>
+  }
+  @Override
+  public Pokemon createPokemon(int index, int cp, int hp, int dust, int candy) {
+<span class="fc" id="L65">   String name = POKEMON_NAMES.getOrDefault(index, &quot;Inconnu&quot;);</span>
+<span class="fc" id="L66">   int[] ivs = generateIVs();</span>
+<span class="fc" id="L67">   double iv = calculateTotalIV(ivs);</span>
+<span class="fc" id="L68">   return new Pokemon(</span>
+           index,
+           name,
+           ivs[0] * 15,
+           ivs[1] * 15,
+           ivs[2] * 15,
+           cp,
+           hp,
+           dust,
+           candy,
+           iv
+   );
+  }
+ }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
