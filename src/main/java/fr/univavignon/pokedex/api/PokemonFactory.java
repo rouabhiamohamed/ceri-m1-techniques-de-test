@@ -37,8 +37,10 @@ public class PokemonFactory implements IPokemonFactory {
    put(8, "Tortank");
    put(133, "Aquali");
   }};
-
-  // Add this line - create a single Random instance
+    /**
+     *
+     * variable random
+     */
   private final Random random = new Random();
 
   /**
@@ -46,8 +48,7 @@ public class PokemonFactory implements IPokemonFactory {
    * @return Un tableau de 3 valeurs (attaque, défense, stamina)
    */
   private int[] generateIVs() {
-   // Remove this line - don't create new Random instance each time
-   // Random random = new Random();
+
    int attack = random.nextInt(16);     // IV entre 0 et 15
    int defense = random.nextInt(16);    // IV entre 0 et 15
    int stamina = random.nextInt(16);    // IV entre 0 et 15
