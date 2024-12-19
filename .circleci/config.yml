@@ -15,8 +15,8 @@ jobs:
       - run:
           name: Generate All Reports
           command: |
-            mvn verify
-            mvn clean 
+          
+            mvn verify clean 
             mvn  site
 
       - codecov/upload:
