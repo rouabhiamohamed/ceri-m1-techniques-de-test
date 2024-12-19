@@ -142,5 +142,5 @@ L'implémentation de la **RocketPokemonFactory** présente plusieurs problèmes.
 ### 3. Logique de Génération des IVs
 
 - **Indices négatifs (ex. -1) :** Attribue des statistiques maximales (1000).
-- **Autres indices :** Génère des statistiques de manière aléatoire via un processus computationnellement coûteux.
+- **Autres indices :** Génère des statistiques de manière aléatoire via un processus  coûteux.
 - **Indices positifs :** Fixe les IVs à 1, ce qui n'est pas réaliste.
