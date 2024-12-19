@@ -145,7 +145,7 @@
                 <executions>
                     <execution>
                         <id>create-badges</id>
-                        <phase>site-deploy</phase>
+                        <phase>site</phase>
                         <goals>
                             <goal>badges</goal>
                         </goals>

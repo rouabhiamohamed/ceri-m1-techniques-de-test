@@ -56,8 +56,8 @@ jobs:
               exit 1
             fi
            
-            if [ -d "../target/site/badges" ]; then
-              cp -r ../target/site/badges/* checkstyle/badges/ || echo "Failed to copy badges"
+            if [ -d "../target/badges" ]; then
+              cp -r ../target/badges/* checkstyle/badges/ || echo "Failed to copy badges"
             else
               echo "Badges not found"
               exit 1
